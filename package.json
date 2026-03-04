@@ -7,8 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build"
   },
+  "homepage": "https://yourusername.github.io/platform-map",
   "dependencies": {
     "framer-motion": "^12.34.3",
     "react": "^19.2.0",
