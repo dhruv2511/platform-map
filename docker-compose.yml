@@ -1,0 +1,9 @@
+services:
+  platform-map:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: platform-map
+    ports:
+      - "8080:80"
+    restart: unless-stopped
