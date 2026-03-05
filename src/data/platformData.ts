@@ -66,7 +66,9 @@ export const awsFramework: Pillar[] = [
       '⚠️ Gap: Spot instance optimization and burst capacity management',
     ],
   },
-  {8%',
+  {
+    name: 'Cost Optimization',
+    score: '78%',
     highlights: [
       'Cost tagging module with cost center, department, and business unit mapping for chargeback',
       'Billable usage log delivery to S3 for detailed by-workspace cost tracking',
@@ -75,9 +77,7 @@ export const awsFramework: Pillar[] = [
       'S3 lifecycle policies for log archival (90-day Glacier transition, 365-day expiry)',
       'Team-based cost tracking jobs and tag validation framework',
       'CloudWatch dashboards for cost visibility (S3 storage, NAT bandwidth)',
-      '⚠️ Gap: Automated anomaly detection and budget threshold enforcement pending
-      'S3 lifecycle policies for log archival (90-day retention)',
-      '⚠️ Gap: Budget enforcement, anomaly alerts, and spot/reserved optimization not automated',
+      '⚠️ Gap: Automated anomaly detection and budget threshold enforcement pending',
     ],
   },
 ]
@@ -397,7 +397,10 @@ export const milestones: Milestone[] = [
       '☑️ Spot instance policy rollout in progress',
       '📋 Automated cost anomaly alerts and rightsize dashboard pending',
     ],
-  }, & DR',
+  },
+  {
+    number: 12,
+    title: 'Operational Excellence & DR',
     status: '✅ 80% Complete',
     description: 'Backup/DR, runbooks, and operational maturity for resilience.',
     features: [
@@ -409,10 +412,7 @@ export const milestones: Milestone[] = [
       '✅ Git PAT support across all CI/CD pipelines with env-based gating',
       '✅ Lifecycle drift guard removal for improved drift detection',
       '🔄 Bootstrap user management (manage_users=true for initial provisioning)',
-      '📋 SLA/SLO tracking and automated runbook triggering pending
-      '📋 Workspace/metastore backup strategy needed',
-      '📋 RTO/RPO runbooks and documentation',
-      '📋 SLA and incident response automation',
+      '📋 SLA/SLO tracking and automated runbook triggering pending',
     ],
   },
 ]
