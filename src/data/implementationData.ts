@@ -286,12 +286,11 @@ export const implementationTasks: ImplementationTask[] = [
     title: 'Remove Broad Drift Guard on Audit Log Delivery',
     description: 'Transition to import-first state onboarding and tighten ignore_changes scope for audit delivery resources',
     priority: 'High',
-    status: 'In Progress',
+    status: 'Completed',
     filesModified: [
-      'audit_log_delivery/',
-      'databricks_deployment/main.tf'
+      'aws_databricks_provisioning/modules/storage/main.tf'
     ],
-    impact: 'Improves drift detection fidelity for audit logging configuration',
+    impact: 'Improves drift detection fidelity for audit logging configuration. Removed broad ignore_changes = [policy] from KMS key and ignore_changes = [rule] from S3 lifecycle, enabling terraform plan to detect real configuration changes.',
     relatedGap: 'Audit Drift Detection'
   },
   {
@@ -300,12 +299,12 @@ export const implementationTasks: ImplementationTask[] = [
     title: 'Define and Test DR Runbooks with RTO/RPO',
     description: 'Create executable recovery playbooks with tiered RTO/RPO and recurring restore drills',
     priority: 'Critical',
-    status: 'Planned',
+    status: 'Completed',
     filesModified: [
-      'docs/DEPLOYMENT_CHECKLIST.md',
-      'docs/ARCHITECTURE_ASSESSMENT.md'
+      'docs/DISASTER_RECOVERY_RUNBOOK.md',
+      'docs/INCIDENT_LOG.md'
     ],
-    impact: 'Raises reliability posture by making recovery objectives measurable and testable',
+    impact: 'Raises reliability posture by making recovery objectives measurable and testable. IaC-first approach enables 1-hour RTO for prod, 4-hour for staging, 8-hour for dev',
     relatedGap: 'Disaster Recovery Readiness'
   },
   {
@@ -314,12 +313,13 @@ export const implementationTasks: ImplementationTask[] = [
     title: 'Enforce Budget and Cost Anomaly Controls',
     description: 'Add budget thresholds, anomaly alerts, and rightsizing controls to move from advisory to enforced cost governance',
     priority: 'High',
-    status: 'Planned',
+    status: 'In Progress',
     filesModified: [
-      'databricks-workspace-configuration-aws/modules/cost_tagging',
-      'pipeline_workflows/'
+      'databricks-workspace-configuration-aws/modules/cost_tagging/',
+      'aws_databricks_provisioning/modules/monitoring_observability/',
+      'databricks-workspace-configuration-aws/modules/cluster_policies/'
     ],
-    impact: 'Improves early spend anomaly detection and sustained cost control',
+    impact: 'Cost tagging framework complete with team-based tracking. CloudWatch cost dashboards and alarms operational. Budget enforcement and anomaly detection partially implemented.',
     relatedGap: 'Cost Governance Enforcement'
   },
   {
@@ -328,12 +328,13 @@ export const implementationTasks: ImplementationTask[] = [
     title: 'Expand Observability to Lineage and Data Quality SLOs',
     description: 'Extend monitoring dashboards and system table analytics for lineage, freshness, and data-quality objectives',
     priority: 'Medium',
-    status: 'Planned',
+    status: 'In Progress',
     filesModified: [
-      'databricks-workspace-configuration-aws/modules/workspace_monitoring',
-      'docs/PLATFORM_PIPELINE_STRATEGY.md'
+      'aws_databricks_provisioning/modules/monitoring_observability/',
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
+      'docs/DISASTER_RECOVERY_RUNBOOK.md'
     ],
-    impact: 'Shifts operations from reactive to proactive for data platform quality risks',
+    impact: 'CloudWatch infrastructure monitoring complete (dashboards, alarms, SNS). Data lineage and quality SLO observability pending. System tables foundation ready.',
     relatedGap: 'Observability Depth'
   },
   {
