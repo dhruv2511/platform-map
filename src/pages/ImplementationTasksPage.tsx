@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { implementationTasks, identifiedGaps, ImplementationTask, IdentifiedGap } from '../data/implementationData'
+import { implementationTasks, identifiedGaps } from '../data/implementationData'
+import type { ImplementationTask, IdentifiedGap } from '../data/implementationData'
 
 export function ImplementationTasksPage() {
   const [activeView, setActiveView] = useState<'tasks' | 'gaps'>('tasks')
