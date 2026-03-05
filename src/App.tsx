@@ -5,6 +5,7 @@ import { AwsFrameworkPage } from './pages/AwsFrameworkPage'
 import { DatabricksFrameworkPage } from './pages/DatabricksFrameworkPage'
 import { FullRoadmapPage } from './pages/FullRoadmapPage'
 import { HomePage } from './pages/HomePage'
+import { ImplementationTasksPage } from './pages/ImplementationTasksPage'
 import { MaturityPage } from './pages/MaturityPage'
 import { ModulesPage } from './pages/ModulesPage'
 import { PrerequisitesPage } from './pages/PrerequisitesPage'
@@ -22,6 +23,7 @@ function App() {
           <Route path="/overview" element={<HomePage />} />
           <Route path="/full-roadmap" element={<FullRoadmapPage />} />
           <Route path="/deployment" element={<DeploymentDashboard />} />
+          <Route path="/implementation" element={<ImplementationTasksPage />} />
           <Route path="/prerequisites-tracker" element={<PrerequisitesTracker />} />
           <Route path="/aws-framework" element={<AwsFrameworkPage />} />
           <Route path="/databricks-framework" element={<DatabricksFrameworkPage />} />
