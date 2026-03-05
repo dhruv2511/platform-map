@@ -8,7 +8,7 @@ export type KeyGap = {
   id: string
   framework: 'AWS' | 'Databricks' | 'Shared'
   pillar: string
-  severity: 'High' | 'Medium'
+  severity: 'High' | 'Medium' | 'Low'
   title: string
   currentState: string
   impact: string
