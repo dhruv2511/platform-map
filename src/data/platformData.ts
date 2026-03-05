@@ -18,7 +18,7 @@ export type KeyGap = {
 export const awsFramework: Pillar[] = [
   {
     name: 'Operational Excellence',
-    score: '82%',
+    score: '80%',
     highlights: [
       'VPC Flow Logs to CloudWatch',
       'Databricks audit and billable usage logs to S3',
@@ -29,7 +29,7 @@ export const awsFramework: Pillar[] = [
   },
   {
     name: 'Security',
-    score: '95%',
+    score: '94%',
     highlights: [
       'SSO/SCIM account-level federation with external ID validation',
       'KMS encryption for root/metastore/audit buckets with DES support',
@@ -41,7 +41,7 @@ export const awsFramework: Pillar[] = [
   },
   {
     name: 'Reliability',
-    score: '78%',
+    score: '74%',
     highlights: [
       'Multi-AZ VPC networking and NAT gateways for HA',
       'S3 versioning on key data buckets for data recovery',
@@ -53,7 +53,7 @@ export const awsFramework: Pillar[] = [
   },
   {
     name: 'Performance Efficiency',
-    score: '80%',
+    score: '79%',
     highlights: [
       'VPC endpoints for S3, STS, Kinesis to reduce latency',
       'Cluster policy controls for scaling guardrails and resource optimization',
@@ -64,7 +64,7 @@ export const awsFramework: Pillar[] = [
   },
   {
     name: 'Cost Optimization',
-    score: '75%',
+    score: '70%',
     highlights: [
       'Cost tagging module with cost center mapping for chargeback',
       'Billable usage log delivery for detailed cost analysis',
@@ -78,7 +78,7 @@ export const awsFramework: Pillar[] = [
 export const databricksFramework: Pillar[] = [
   {
     name: 'Reliability & Performance',
-    score: '84%',
+    score: '81%',
     highlights: [
       'Cluster policy controls with 5 policy templates (dev/prod/power/read/cost)',
       'Pipeline-managed workspace configuration for consistency',
@@ -89,7 +89,7 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Security & Compliance',
-    score: '94%',
+    score: '90%',
     highlights: [
       'SSO/SCIM with automatic account-level identity federation',
       'PrivateLink for secure API and SCC relay endpoints',
@@ -100,7 +100,7 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Governance & Monitoring',
-    score: '78%',
+    score: '74%',
     highlights: [
       'Unity Catalog metastore with schema-level access controls',
       'System tables readiness for SQL-based analytics',
@@ -111,7 +111,7 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Data Management',
-    score: '82%',
+    score: '84%',
     highlights: [
       'Metastore storage bucket with KMS encryption and versioning',
       'Separate buckets for root storage, metastore, and audit logs',
@@ -122,7 +122,7 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Cost Optimization',
-    score: '72%',
+    score: '69%',
     highlights: [
       'Cost tags framework with cost center mapping',
       'Billable usage logs for detailed by-workspace cost tracking',
@@ -132,7 +132,7 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Operational Excellence',
-    score: '85%',
+    score: '81%',
     highlights: [
       'IaC-first design with modular 4-layer architecture',
       'Automated plan/apply/destroy with destructive change detection',
@@ -195,10 +195,10 @@ export type Milestone = {
 }
 
 export const scoreCards = {
-  awsWaf: '86%',
-  databricksWaf: '83%',
+  awsWaf: '82%',
+  databricksWaf: '80%',
   platformMaturity: 'L3.4',
-  securityPillar: '95%',
+  securityPillar: '91%',
 }
 
 export const keyGaps: KeyGap[] = [

@@ -34,10 +34,10 @@ export function FrameworkReviewSection() {
       </div>
 
       <div className="kpi-row">
-        <div className="kpi card-density-primary">AWS Score<strong>84%</strong></div>
-        <div className="kpi card-density-primary">Databricks Score<strong>78%</strong></div>
-        <div className="kpi card-density-primary">Security Pillar<strong>93%</strong></div>
-        <div className="kpi card-density-primary">Maturity<strong>L3.0 → L3.3</strong></div>
+        <div className="kpi card-density-primary">AWS Score<strong>82%</strong></div>
+        <div className="kpi card-density-primary">Databricks Score<strong>80%</strong></div>
+        <div className="kpi card-density-primary">Security Pillar<strong>91%</strong></div>
+        <div className="kpi card-density-primary">Maturity<strong>L3.0 → L3.4</strong></div>
       </div>
 
       <div className="feature-grid grid-secondary">

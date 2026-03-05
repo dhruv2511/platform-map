@@ -249,6 +249,120 @@ export const implementationTasks: ImplementationTask[] = [
     ],
     impact: 'Automatic key material rotation every 365 days; previous keys retained for decryption',
     relatedGap: 'Encryption Management'
+  },
+
+  // Architecture Review Backlog (AWS + Databricks Well-Architected)
+  {
+    id: 'ARCH-001',
+    category: 'Compliance',
+    title: 'Automate Account-Level SSO/SCIM Validation Gates',
+    description: 'Add post-apply checks and release gates to ensure account-console SSO/SCIM onboarding is completed consistently',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      '.github/workflows/workspace-configuration.yml',
+      'databricks-workspace-configuration-aws/modules/sso_configuration'
+    ],
+    impact: 'Reduces onboarding drift and improves control evidence for identity federation',
+    relatedGap: 'Account SSO/SCIM Automation'
+  },
+  {
+    id: 'ARCH-002',
+    category: 'Security',
+    title: 'Implement Secrets Rotation Orchestration',
+    description: 'Automate SCIM/bootstrap secret rotation with alerting and expiry controls',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'pipeline_workflows/',
+      'aws_databricks_provisioning/modules/'
+    ],
+    impact: 'Lowers credential-age risk and aligns with security rotation policy',
+    relatedGap: 'Secret Rotation Automation'
+  },
+  {
+    id: 'ARCH-003',
+    category: 'Operations',
+    title: 'Remove Broad Drift Guard on Audit Log Delivery',
+    description: 'Transition to import-first state onboarding and tighten ignore_changes scope for audit delivery resources',
+    priority: 'High',
+    status: 'In Progress',
+    filesModified: [
+      'audit_log_delivery/',
+      'databricks_deployment/main.tf'
+    ],
+    impact: 'Improves drift detection fidelity for audit logging configuration',
+    relatedGap: 'Audit Drift Detection'
+  },
+  {
+    id: 'ARCH-004',
+    category: 'Operations',
+    title: 'Define and Test DR Runbooks with RTO/RPO',
+    description: 'Create executable recovery playbooks with tiered RTO/RPO and recurring restore drills',
+    priority: 'Critical',
+    status: 'Planned',
+    filesModified: [
+      'docs/DEPLOYMENT_CHECKLIST.md',
+      'docs/ARCHITECTURE_ASSESSMENT.md'
+    ],
+    impact: 'Raises reliability posture by making recovery objectives measurable and testable',
+    relatedGap: 'Disaster Recovery Readiness'
+  },
+  {
+    id: 'ARCH-005',
+    category: 'Cost Optimization',
+    title: 'Enforce Budget and Cost Anomaly Controls',
+    description: 'Add budget thresholds, anomaly alerts, and rightsizing controls to move from advisory to enforced cost governance',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/cost_tagging',
+      'pipeline_workflows/'
+    ],
+    impact: 'Improves early spend anomaly detection and sustained cost control',
+    relatedGap: 'Cost Governance Enforcement'
+  },
+  {
+    id: 'ARCH-006',
+    category: 'Operations',
+    title: 'Expand Observability to Lineage and Data Quality SLOs',
+    description: 'Extend monitoring dashboards and system table analytics for lineage, freshness, and data-quality objectives',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring',
+      'docs/PLATFORM_PIPELINE_STRATEGY.md'
+    ],
+    impact: 'Shifts operations from reactive to proactive for data platform quality risks',
+    relatedGap: 'Observability Depth'
+  },
+  {
+    id: 'ARCH-007',
+    category: 'Security',
+    title: 'Automate User Deprovisioning Reconciliation',
+    description: 'Introduce periodic entitlement reconciliation and stale principal deactivation workflow',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/scim_connector',
+      'databricks-workspace-configuration-aws/modules/dbx_users_groups'
+    ],
+    impact: 'Reduces dormant identity exposure and improves joiner/mover/leaver control maturity',
+    relatedGap: 'Identity Lifecycle Automation'
+  },
+  {
+    id: 'ARCH-008',
+    category: 'Compliance',
+    title: 'Operationalize Git URL Restriction Compliance Checks',
+    description: 'Document mandatory console controls and add pipeline compliance checks for repo restriction policy intent',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'docs/README_SSO_SCIM_CORRECTED.md',
+      '.github/workflows/workspace-configuration.yml'
+    ],
+    impact: 'Compensates API limitation with enforceable governance and auditable controls',
+    relatedGap: 'Git Source Governance'
   }
 ]
 
@@ -375,5 +489,93 @@ export const identifiedGaps: IdentifiedGap[] = [
     status: 'Addressed',
     relatedTasks: ['COMP-002'],
     impact: 'Enhanced security posture; automated compliance with key rotation requirements'
+  },
+  {
+    id: 'GAP-011',
+    category: 'Operations',
+    title: 'Account SSO/SCIM Automation',
+    currentState: 'Terraform prepares objects, but account-console SSO/SCIM completion is still operationally manual',
+    targetState: 'Post-deployment validation and release gates enforce complete account-level onboarding',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['ARCH-001'],
+    impact: 'Manual identity onboarding steps increase variance and audit effort'
+  },
+  {
+    id: 'GAP-012',
+    category: 'Security',
+    title: 'Secret Rotation Automation',
+    currentState: 'Secrets are centrally stored, but periodic rotation workflow is not fully automated end-to-end',
+    targetState: 'Automated rotation orchestration with expiry alerting and operational runbooks',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['ARCH-002'],
+    impact: 'Credential age can exceed policy and elevate access risk'
+  },
+  {
+    id: 'GAP-013',
+    category: 'Operations',
+    title: 'Audit Drift Detection',
+    currentState: 'Audit log delivery currently relies on broad drift guard behavior to avoid duplicate config failures',
+    targetState: 'Import-first onboarding with narrow ignore scope and full drift visibility',
+    priority: 'High',
+    status: 'Mitigated',
+    relatedTasks: ['ARCH-003'],
+    impact: 'Critical audit telemetry settings may drift without strong detection'
+  },
+  {
+    id: 'GAP-014',
+    category: 'Reliability',
+    title: 'Disaster Recovery Readiness',
+    currentState: 'Backups/versioning exist, but formal RTO/RPO and executable recovery drills are not codified',
+    targetState: 'Tiered RTO/RPO targets with scheduled restore testing and owned runbooks',
+    priority: 'Critical',
+    status: 'Open',
+    relatedTasks: ['ARCH-004'],
+    impact: 'Recovery timelines are unpredictable under regional or account-level incidents'
+  },
+  {
+    id: 'GAP-015',
+    category: 'Cost',
+    title: 'Cost Governance Enforcement',
+    currentState: 'Cost tagging and usage logs are available, but budget and anomaly response remain mostly manual',
+    targetState: 'Automated budget guardrails and anomaly response integrated into platform operations',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['ARCH-005'],
+    impact: 'Spend outliers are detected late and optimization actions are inconsistent'
+  },
+  {
+    id: 'GAP-016',
+    category: 'Performance',
+    title: 'Observability Depth',
+    currentState: 'Infrastructure telemetry is healthy, but lineage and data quality SLO coverage is partial',
+    targetState: 'Unified observability including lineage, freshness, and data quality SLO signals',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['ARCH-006'],
+    impact: 'Data quality incidents are caught later and root cause analysis takes longer'
+  },
+  {
+    id: 'GAP-017',
+    category: 'Security',
+    title: 'Identity Lifecycle Automation',
+    currentState: 'SCIM path exists, but full leaver/deprovisioning enforcement is not consistently automated',
+    targetState: 'Automated entitlement reconciliation and stale principal deactivation',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['ARCH-007'],
+    impact: 'Dormant identities may remain active beyond policy tolerance'
+  },
+  {
+    id: 'GAP-018',
+    category: 'Operations',
+    title: 'Git Source Governance',
+    currentState: 'Certain git restriction controls are not manageable through current workspace conf API coverage',
+    targetState: 'Compensating controls documented and continuously validated in CI workflows',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['ARCH-008'],
+    impact: 'Repository governance assurance depends on manual admin checks'
   }
 ]
