@@ -58,12 +58,6 @@ export function RecentUpdatesSection() {
       items: ['manage_users=true for initial workspace provisioning', 'IdP-first user creation pattern', 'Switch to false after IdP sync complete'],
       arch: 'DevOps',
     },
-    {
-      title: '📊 Platform-Map Complete Update',
-      status: '✅ Complete',
-      items: ['AWS 82%→85%, Databricks 80%→83% scores updated', 'L3.4→L3.5 maturity with cost dimension (L3.0)', 'Dashboard restructured to show current state'],
-      arch: 'Documentation',
-    },
   ]
 
   return (

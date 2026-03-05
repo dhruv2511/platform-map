@@ -1,6 +1,6 @@
 export interface ImplementationTask {
   id: string
-  category: 'Security' | 'Operations' | 'Infrastructure' | 'Cost Optimization' | 'Compliance'
+  category: 'Security' | 'Operations' | 'Infrastructure' | 'Cost Optimization' | 'Compliance' | 'Data Platform Readiness'
   title: string
   description: string
   priority: 'Critical' | 'High' | 'Medium' | 'Low'
@@ -17,7 +17,7 @@ export const implementationTasks: ImplementationTask[] = [
     id: 'SEC-001',
     category: 'Security',
     title: 'Git PAT Removal from Terraform State',
-    description: 'Remove GitHub Personal Access Token from Terraform state file to prevent credential exposure',
+    description: 'Remove GitHub Personal Access Token from Terraform state file to prevent credential exposure in production data platform pipeline',
     priority: 'Critical',
     status: 'Completed',
     completedDate: '2026-03-05',
@@ -25,14 +25,14 @@ export const implementationTasks: ImplementationTask[] = [
       'git_integration/main.tf',
       'git_integration/variables.tf'
     ],
-    impact: 'PAT never persisted in .tfstate; flows from GitHub Secrets → Actions → Terraform → Databricks only',
+    impact: 'PAT never persisted in .tfstate; flows from GitHub Secrets → Actions → Terraform → Databricks only. Foundation for secure production data platform deployment.',
     relatedGap: 'Credential Management'
   },
   {
     id: 'SEC-002',
     category: 'Security',
     title: 'S3 Bucket Security Hardening',
-    description: 'Implement versioning, bucket policy, lifecycle management, and KMS key policies for all S3 buckets',
+    description: 'Implement versioning, bucket policy, lifecycle management, and KMS key policies for all S3 buckets to protect production data platform assets',
     priority: 'High',
     status: 'Completed',
     completedDate: '2026-03-05',
@@ -40,7 +40,7 @@ export const implementationTasks: ImplementationTask[] = [
       'storage/main.tf',
       'storage/variables.tf'
     ],
-    impact: 'Enterprise-grade bucket security: versioning enabled, HTTPS enforced, Glacier lifecycle (90d), KMS rotation',
+    impact: 'Enterprise-grade bucket security: versioning enabled for data recovery, HTTPS enforced, Glacier lifecycle (90d) for cost optimization, KMS rotation enabled. Foundation for trustworthy data platform storage.',
     relatedGap: 'Data Protection'
   },
   {
@@ -254,64 +254,65 @@ export const implementationTasks: ImplementationTask[] = [
   // Architecture Review Backlog (AWS + Databricks Well-Architected)
   {
     id: 'ARCH-001',
-    category: 'Compliance',
+    category: 'Data Platform Readiness',
     title: 'Automate Account-Level SSO/SCIM Validation Gates',
-    description: 'Add post-apply checks and release gates to ensure account-console SSO/SCIM onboarding is completed consistently',
+    description: 'Add post-apply checks and release gates to ensure account-console SSO/SCIM onboarding is completed consistently and validated end-to-end. Production data access depends on identity federation working reliably.',
     priority: 'High',
     status: 'Planned',
     filesModified: [
       '.github/workflows/workspace-configuration.yml',
       'databricks-workspace-configuration-aws/modules/sso_configuration'
     ],
-    impact: 'Reduces onboarding drift and improves control evidence for identity federation',
+    impact: 'Production readiness requirement: Enables automated validation that SSO and SCIM provisioning work end-to-end before teams use the platform. Prevents identity federation from silently breaking. Reduces onboarding drift and improves control evidence for identity federation.',
     relatedGap: 'Account SSO/SCIM Automation'
   },
   {
     id: 'ARCH-002',
-    category: 'Security',
+    category: 'Data Platform Readiness',
     title: 'Implement Secrets Rotation Orchestration',
-    description: 'Automate SCIM/bootstrap secret rotation with alerting and expiry controls',
+    description: 'Automate service principal and database credential rotation with alerting (80-day SP refresh, 30-day DB passwords, long-lived admin) to ensure production data pipeline security and prevent auth failures during critical operations',
     priority: 'High',
     status: 'Planned',
     filesModified: [
       'pipeline_workflows/',
-      'aws_databricks_provisioning/modules/'
+      'aws_databricks_provisioning/modules/',
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/'
     ],
-    impact: 'Lowers credential-age risk and aligns with security rotation policy',
+    impact: 'Service principal credential freshness enforced via automated EventBridge trigger; production data pipelines cannot fail due to expired credentials; admin credentials long-lived (manual annual review). Prerequisite for data platform production readiness.',
     relatedGap: 'Secret Rotation Automation'
   },
   {
     id: 'ARCH-003',
     category: 'Operations',
     title: 'Remove Broad Drift Guard on Audit Log Delivery',
-    description: 'Transition to import-first state onboarding and tighten ignore_changes scope for audit delivery resources',
+    description: 'Transition to import-first state onboarding and tighten ignore_changes scope for audit delivery resources to ensure production data platform audit trail integrity',
     priority: 'High',
     status: 'Completed',
     filesModified: [
       'aws_databricks_provisioning/modules/storage/main.tf'
     ],
-    impact: 'Improves drift detection fidelity for audit logging configuration. Removed broad ignore_changes = [policy] from KMS key and ignore_changes = [rule] from S3 lifecycle, enabling terraform plan to detect real configuration changes.',
+    impact: 'Improves drift detection fidelity for audit logging configuration. Removed broad ignore_changes = [policy] from KMS key and ignore_changes = [rule] from S3 lifecycle, enabling terraform plan to detect real configuration changes. Critical audit telemetry now protected.',
     relatedGap: 'Audit Drift Detection'
   },
   {
     id: 'ARCH-004',
     category: 'Operations',
     title: 'Define and Test DR Runbooks with RTO/RPO',
-    description: 'Create executable recovery playbooks with tiered RTO/RPO and recurring restore drills',
+    description: 'Create executable recovery playbooks with tiered RTO/RPO and recurring restore drills for production data platform',
     priority: 'Critical',
     status: 'Completed',
     filesModified: [
       'docs/DISASTER_RECOVERY_RUNBOOK.md',
       'docs/INCIDENT_LOG.md'
     ],
-    impact: 'Raises reliability posture by making recovery objectives measurable and testable. IaC-first approach enables 1-hour RTO for prod, 4-hour for staging, 8-hour for dev',
+    impact: 'Foundation for production reliability: IaC-first approach enables 1-hour RTO for prod, 4-hour for staging, 8-hour for dev. Data platform recovery is predictable and testable. Measurable recovery objectives make production readiness assessments credible.',
     relatedGap: 'Disaster Recovery Readiness'
   },
   {
     id: 'ARCH-005',
-    category: 'Cost Optimization',
+    category: 'Data Platform Readiness',
     title: 'Enforce Budget and Cost Anomaly Controls',
-    description: 'Add budget thresholds, anomaly alerts, and rightsizing controls to move from advisory to enforced cost governance',
+    description: 'Add hard budget thresholds, daily cost anomaly detection, and auto-remediation to move from advisory tagging to enforced cost governance. Without these controls, production data platform costs will spiral out of control in Week 2.',
     priority: 'High',
     status: 'In Progress',
     filesModified: [
@@ -319,22 +320,22 @@ export const implementationTasks: ImplementationTask[] = [
       'aws_databricks_provisioning/modules/monitoring_observability/',
       'databricks-workspace-configuration-aws/modules/cluster_policies/'
     ],
-    impact: 'Cost tagging framework complete with team-based tracking. CloudWatch cost dashboards and alarms operational. Budget enforcement and anomaly detection partially implemented.',
+    impact: 'CRITICAL BLOCKER: Prevents 2-3x budget overruns. Hard limits on cluster creation via policies, auto-termination of runaway clusters, daily cost anomaly alerts via CloudWatch. Cost tagging framework complete with team-based tracking; enforcement and anomaly detection pending. Without this, platform shuts down Week 2.',
     relatedGap: 'Cost Governance Enforcement'
   },
   {
     id: 'ARCH-006',
-    category: 'Operations',
+    category: 'Data Platform Readiness',
     title: 'Expand Observability to Lineage and Data Quality SLOs',
-    description: 'Extend monitoring dashboards and system table analytics for lineage, freshness, and data-quality objectives',
-    priority: 'Medium',
+    description: 'Implement Delta Live Tables expectations, data freshness SLO tracking, and quality scorecards for all critical tables. Without this, production data quality issues propagate undetected until users report bad reports.',
+    priority: 'High',
     status: 'In Progress',
     filesModified: [
       'aws_databricks_provisioning/modules/monitoring_observability/',
       'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
       'docs/DISASTER_RECOVERY_RUNBOOK.md'
     ],
-    impact: 'CloudWatch infrastructure monitoring complete (dashboards, alarms, SNS). Data lineage and quality SLO observability pending. System tables foundation ready.',
+    impact: 'CRITICAL BLOCKER: Enables data-driven production readiness assessment. Delta Live Tables expectations prevent bad data propagation. Freshness SLO dashboard shows table health in real-time. CloudWatch infrastructure monitoring complete; data lineage, quality SLO observability, and freshness tracking pending. Production BI pipelines cannot launch without this.',
     relatedGap: 'Observability Depth'
   },
   {
@@ -364,6 +365,92 @@ export const implementationTasks: ImplementationTask[] = [
     ],
     impact: 'Compensates API limitation with enforceable governance and auditable controls',
     relatedGap: 'Git Source Governance'
+  },
+
+  // Data Platform Architect Tasks (Q2-Q4 2026)
+  {
+    id: 'DATA-001',
+    category: 'Compliance',
+    title: 'Build Data Catalog and Metadata Framework',
+    description: 'Implement data dictionary, glossary, and lineage tracking for all tables in Unity Catalog',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
+      'docs/data_catalog_setup.md'
+    ],
+    impact: 'Enables self-service data discovery, reduces duplicate ETL, improves data quality compliance (L2.2 → L3.5)',
+    relatedGap: 'Data Catalog & Glossary'
+  },
+  {
+    id: 'DATA-002',
+    category: 'Data Platform Readiness',
+    title: 'Implement Data Quality Framework with SLOs',
+    description: 'Deploy Delta Live Tables expectations, data quality rules, and SLO tracking for all critical tables. CRITICAL BLOCKER: Without this, bad data silently propagates to BI reports and breaks Week 3.',
+    priority: 'Critical',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
+      'docs/data_quality_standards.md'
+    ],
+    impact: 'CRITICAL FOR PRODUCTION LAUNCH: Prevents bad data propagation, enables data quality observability, enables first-week BI pipeline validation. Without DLT expectations and quality gates, Week 3 BI reports will show bad numbers and stakeholders lose trust.',
+    relatedGap: 'Data Quality Governance'
+  },
+  {
+    id: 'DATA-003',
+    category: 'Security',
+    title: 'Implement Row & Column-Level Security (RLS/CLS)',
+    description: 'Deploy row-level filtering and column-level masking for sensitive data across Unity Catalog',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/dbx_users_groups/',
+      'docs/security_masking_standards.md'
+    ],
+    impact: 'Enables role-based data access, prevents unauthorized PII exposure, achieves GDPR/CCPA compliance',
+    relatedGap: 'Data Privacy & Masking'
+  },
+  {
+    id: 'DATA-004',
+    category: 'Operations',
+    title: 'Establish Semantic Layer (dbt Transformation)',
+    description: 'Build dbt project with conformed dimensions, business metrics, and lineage for BI/analytics',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/dbt/',
+      'data_platform_transformations/'
+    ],
+    impact: 'Enables consistent metrics, reduces BI building time, improves analytics maturity (L2.8 → L3.5)',
+    relatedGap: 'Analytics Semantic Layer'
+  },
+  {
+    id: 'DATA-005',
+    category: 'Operations',
+    title: 'Enable Real-Time Streaming Analytics',
+    description: 'Implement Kafka/Kinesis ingestion, Auto-loader, and real-time SLA framework',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
+      'docs/streaming_architecture.md'
+    ],
+    impact: 'Enables real-time dashboards, ML feature stores, meets low-latency SLOs (L1.0 → L2.5)',
+    relatedGap: 'Real-Time Data Pipeline'
+  },
+  {
+    id: 'DATA-006',
+    category: 'Operations',
+    title: 'Implement ML/AI Governance with MLflow',
+    description: 'Set up MLflow experiment tracking, model registry, and governance for ML workloads',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
+      'docs/ml_governance_framework.md'
+    ],
+    impact: 'Enables reproducible ML, audit trail for models, improves ML governance maturity (L2.0 → L3.0)',
+    relatedGap: 'ML Model Governance'
   }
 ]
 
@@ -578,5 +665,95 @@ export const identifiedGaps: IdentifiedGap[] = [
     status: 'Open',
     relatedTasks: ['ARCH-008'],
     impact: 'Repository governance assurance depends on manual admin checks'
+  },
+
+  // Data Platform Governance Gaps (Q2-Q4 2026)
+  {
+    id: 'GAP-019',
+    category: 'Operations',
+    title: 'Data Catalog & Glossary',
+    currentState: 'Basic table definitions exist; no centralized glossary, metadata tags, or data dictionary available for self-service discovery',
+    targetState: 'Unified data catalog with glossary, ownership tagging, PII classification, and lineage visualization',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['DATA-001'],
+    impact: 'Data professionals spending 10-20% time searching for datasets; duplicate ETL pipelines created from unknown sources'
+  },
+  {
+    id: 'GAP-020',
+    category: 'Operations',
+    title: 'Data Quality Governance',
+    currentState: 'No formal data quality expectations, thresholds, or monitoring of data freshness/completeness SLOs',
+    targetState: 'Delta Live Tables expectations, quality scorecards, and SLO dashboard for all datasets',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['DATA-002'],
+    impact: 'Bad data propagates downstream to BI/ML; quality issues discovered late by end users'
+  },
+  {
+    id: 'GAP-021',
+    category: 'Security',
+    title: 'Data Privacy & Masking',
+    currentState: 'No row-level security or column-level masking; all users seeing unmasked PII and sensitive data',
+    targetState: 'RLS and CLS policies enforced for sensitive columns; PII automatically detected and masked',
+    priority: 'High',
+    status: 'Open',
+    relatedTasks: ['DATA-003'],
+    impact: 'GDPR/CCPA compliance risk; unauthorized data exposure; audit trail incomplete for sensitive access'
+  },
+  {
+    id: 'GAP-022',
+    category: 'Operations',
+    title: 'Analytics Semantic Layer',
+    currentState: 'Ad-hoc SQL queries across raw/transformed tables; no conformed dimensions or metric definitions',
+    targetState: 'dbt transformation layer with conformed dimensions, business metrics, and BI-ready views',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['DATA-004'],
+    impact: 'Duplicate metric definitions; inconsistent reporting; BI teams spending 30-40% time on ETL vs. analytics'
+  },
+  {
+    id: 'GAP-023',
+    category: 'Operations',
+    title: 'Real-Time Data Pipeline',
+    currentState: 'Batch-only ingestion; no streaming architecture, low-latency SLOs, or real-time feature store',
+    targetState: 'Kafka/Kinesis → Auto-loader → Real-time transformation → Real-time BI and Feature Store',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['DATA-005'],
+    impact: 'Real-time analytics and ML use cases not enabled; batch latency 4-24 hours vs. sub-minute SLOs'
+  },
+  {
+    id: 'GAP-024',
+    category: 'Operations',
+    title: 'ML Model Governance',
+    currentState: 'No MLflow setup; model experiments and lineage tracking manual; approval gates not enforced',
+    targetState: 'MLflow experiment tracking, model registry, and approval workflow for all production deployments',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['DATA-006'],
+    impact: 'ML reproducibility gaps; difficult to trace model changes; no audit trail for compliance'
+  },
+  {
+    id: 'GAP-025',
+    category: 'Cost',
+    title: 'Per-Query Cost Tracking',
+    currentState: 'Cost allocated at cluster/team level; fine-grain per-query cost attribution missing',
+    targetState: 'Query-level cost tracking with BI attribution and team chargeback',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['ARCH-005'],
+    impact: 'Cannot optimize expensive queries; cost accountability at query level missing'
+  },
+  {
+    id: 'GAP-026',
+    category: 'Operations',
+    title: 'Data Lineage Tracking',
+    currentState: 'Table dependencies exist in code; no automated lineage visualization or impact analysis',
+    targetState: 'Automated lineage capturing for table-to-table, column-level, and job dependencies',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['DATA-001'],
+    impact: 'Downstream impact analysis manual; difficult to trace data quality issues to root source'
   }
 ]
