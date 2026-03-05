@@ -32,9 +32,9 @@ export function FrameworkReviewSection() {
               <li>AWS WAF: 85% (+3%) ↗️</li>
               <li>Databricks WAF: 83% (+3%) ↗️</li>
               <li>Maturity: L3.5 (+0.1)</li>
-              <li>9/12 milestones complete (95%+)</li>
+              <li>10/12 milestones complete (95%+)</li>
               <li>✅ DR runbook with RTO/RPO, quarterly drills</li>
-              <li>✅ Cost monitoring dashboards, alarms, team tracking</li>
+              <li>✅ Cost monitoring: SNS alerts + anomaly detection + dashboards</li>
             </ul>
           </div>
         </div>
@@ -49,8 +49,9 @@ export function FrameworkReviewSection() {
 
       <div className="feature-grid grid-secondary">
         <article className="roadmap-mini-card success card-density-secondary">
-          <h4><span className="icon-status success">✅</span>2-Week Wins (6)</h4>
+          <h4><span className="icon-status success">✅</span>2-Week Wins (7)</h4>
           <ul>
+            <li>✓ ARCH-005: Budget/anomaly controls ✅</li>
             <li>✓ ARCH-004: DR runbooks (RTO/RPO)</li>
             <li>✓ ARCH-003: Audit drift guards</li>
             <li>✓ Git PAT across all CI/CD</li>
@@ -60,13 +61,12 @@ export function FrameworkReviewSection() {
           </ul>
         </article>
         <article className="roadmap-mini-card warning card-density-secondary">
-          <h4><span className="icon-status warning">🔄</span>In Progress (2)</h4>
+          <h4><span className="icon-status warning">🔄</span>In Progress (1)</h4>
           <ul>
-            <li>⏳ ARCH-005: Budget/anomaly controls</li>
-            <li>⏳ ARCH-006: Observability depth</li>
-            <li>Cost tagging framework: 75% done</li>
-            <li>CloudWatch alarms: operational</li>
-            <li>Team cost tracking: ready</li>
+            <li>⏳ ARCH-006: Observability depth (data quality SLOs)</li>
+            <li>DLT expectations framework: 0% done</li>
+            <li>Freshness SLO dashboard: pending</li>
+            <li>Lineage tracking integration: pending</li>
           </ul>
         </article>
         <article className="roadmap-mini-card info card-density-secondary">

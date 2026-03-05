@@ -49,7 +49,7 @@ export function RecentUpdatesSection() {
     {
       title: '💰 Cost Monitoring & Dashboards',
       status: '✅ Deployed Mar 5',
-      items: ['CloudWatch dashboards for infra/network/cost', 'SNS alarms for NAT/S3/KMS thresholds', 'Team-based cost tracking with budget tiers'],
+      items: ['SNS topic with email notifications to ops/finance', 'CloudWatch budget threshold alarm ($5k/month default)', 'Cost anomaly detection (ANOMALY_DETECTION_BAND 2σ)', 'Weekly cost spike alerts (25% threshold)', 'CloudWatch dashboard for real-time cost viz', 'Databricks monthly cost analysis job (1st of month)'],
       arch: 'ARCH-005',
     },
     {
