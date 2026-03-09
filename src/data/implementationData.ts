@@ -256,14 +256,14 @@ export const implementationTasks: ImplementationTask[] = [
     id: 'ARCH-001',
     category: 'Data Platform Readiness',
     title: 'Automate Account-Level SSO/SCIM Validation Gates',
-    description: 'Add post-apply checks and release gates to ensure account-console SSO/SCIM onboarding is completed consistently and validated end-to-end. Production data access depends on identity federation working reliably.',
+    description: 'Account-level SCIM is enabled. Further automated validation is currently constrained by account-console/API limitations, so user management remains governed by documented manual SSO/SCIM operational steps.',
     priority: 'High',
-    status: 'Planned',
+    status: 'Blocked',
     filesModified: [
       '.github/workflows/workspace-configuration.yml',
       'databricks-workspace-configuration-aws/modules/sso_configuration'
     ],
-    impact: 'Production readiness requirement: Enables automated validation that SSO and SCIM provisioning work end-to-end before teams use the platform. Prevents identity federation from silently breaking. Reduces onboarding drift and improves control evidence for identity federation.',
+    impact: 'SCIM enablement is complete; additional test automation is not feasible at present. Manual onboarding/validation checklist remains the control path for user management.',
     relatedGap: 'Account SSO/SCIM Automation'
   },
   {
@@ -590,12 +590,12 @@ export const identifiedGaps: IdentifiedGap[] = [
     id: 'GAP-011',
     category: 'Operations',
     title: 'Account SSO/SCIM Automation',
-    currentState: 'Terraform prepares objects, but account-console SSO/SCIM completion is still operationally manual',
-    targetState: 'Post-deployment validation and release gates enforce complete account-level onboarding',
-    priority: 'High',
-    status: 'Open',
+    currentState: 'Account-level SCIM is enabled; remaining onboarding validation is manual by operational design',
+    targetState: 'Manual runbook-based verification retained until account-console/API automation is available',
+    priority: 'Low',
+    status: 'Accepted',
     relatedTasks: ['ARCH-001'],
-    impact: 'Manual identity onboarding steps increase variance and audit effort'
+    impact: 'Low: manual identity onboarding checklist is documented and repeatable'
   },
   {
     id: 'GAP-012',
