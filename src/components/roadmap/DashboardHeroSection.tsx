@@ -6,22 +6,22 @@ type Metric = {
 }
 
 const topMetrics: Metric[] = [
-  { label: 'AWS WAF', value: '85%', delta: '+3 (2-week sprint)', tone: 'good' },
-  { label: 'Databricks WAF', value: '83%', delta: '+3 (2-week sprint)', tone: 'good' },
-  { label: 'Security Pillar', value: '91%', delta: 'Maintained', tone: 'good' },
-  { label: 'Platform Maturity', value: 'L3.5', delta: '+0.1 (OpEx +0.3)', tone: 'good' },
+  { label: 'AWS WAF', value: '88%', delta: '+6 (2-week sprint)', tone: 'good' },
+  { label: 'Databricks WAF', value: '87%', delta: '+7 (2-week sprint)', tone: 'good' },
+  { label: 'Security Pillar', value: '92%', delta: 'Maintained', tone: 'good' },
+  { label: 'Platform Maturity', value: 'L3.7', delta: '+0.3 (OpEx +0.3)', tone: 'good' },
 ]
 
-const tags = ['🔒 Security Wave Complete', '🚀 Architect Sprint Done', '📊 DR Runbooks Live']
+const tags = ['🔒 Security Wave Complete', '🚀 Infrastructure Ready', '📊 DR & Cost Monitoring Live']
 
 export function DashboardHeroSection() {
   return (
     <section className="dashboard-hero">
       <div className="dashboard-hero-main">
         <span className="dashboard-badge">2-Week Sprint Summary</span>
-        <h2>Databricks on AWS: Feb 24 → Mar 5 Delivery Sprint</h2>
+        <h2>Databricks on AWS: Feb 24 → Mar 9 Delivery Sprint</h2>
         <p>
-          Security hardening wave + architect sprint completion. Platform maturity L3.5, AWS 85%, Databricks 83%. Real-time status on DR readiness, cost monitoring, and lifecycle governance.
+          Security hardening wave + architect sprint completion. Platform maturity L3.7, AWS 88%, Databricks 87%. Real-time status on DR readiness, cost monitoring with enforcement, module centralization, and lifecycle governance. ✅ 99% implementation complete.
         </p>
         <div className="dashboard-tag-row">
           {tags.map((tag) => (
