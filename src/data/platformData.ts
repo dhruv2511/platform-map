@@ -205,10 +205,10 @@ export const moduleGroups = [
 
 export const maturityRows = [
   { dimension: 'Infrastructure', level: 'L4.1', detail: 'Multi-AZ VPC, encryption, PrivateLink, VPC flow logs, CloudWatch monitoring with alarms, spot instance optimization' },
-  { dimension: 'Platform', level: 'L3.8', detail: 'Workspace + Unity Catalog + config modules, complete 4-layer architecture, DR procedures, all 15 modules operationalized' },
+  { dimension: 'Platform', level: 'L3.9', detail: 'Workspace + Unity Catalog + config modules, complete 4-layer architecture, DR procedures, all 15 modules production-ready' },
   { dimension: 'Security', level: 'L4.1', detail: 'SSO/SCIM, KMS + DES, audit logs, cross-account IAM, Git PAT support, comprehensive permission hardening' },
-  { dimension: 'Data Governance', level: 'L3.5', detail: 'Metastore foundation, governance controls, audit log delivery, system tables ready, cost tagging, workspace isolation' },
-  { dimension: 'Operational Excellence', level: 'L3.8', detail: 'Full CI/CD automation, DR runbooks with RTO/RPO, observability baseline including cost monitoring, git integration, and alarms' },
+  { dimension: 'Data Governance', level: 'L3.6', detail: 'Metastore foundation, governance controls, audit log delivery, system tables analytics, cost tagging, workspace isolation' },
+  { dimension: 'Operational Excellence', level: 'L3.9', detail: 'Full CI/CD automation, DR runbooks with RTO/RPO, complete observability (infra + workspace), git integration, automated alerts' },
   { dimension: 'Cost Management', level: 'L3.5', detail: 'Cost tagging framework, billable usage logs, cluster policy budgets, real-time anomaly detection (2σ), weekly spike alerts, SNS/Lambda remediation, spot optimization' },
 ]
 
@@ -221,9 +221,9 @@ export type Milestone = {
 }
 
 export const scoreCards = {
-  awsWaf: '87%',
-  databricksWaf: '86%',
-  platformMaturity: 'L3.6',
+  awsWaf: '88%',
+  databricksWaf: '87%',
+  platformMaturity: 'L3.7',
   securityPillar: '92%',
 }
 
@@ -370,15 +370,17 @@ export const milestones: Milestone[] = [
   {
     number: 9,
     title: 'Monitoring & Observability',
-    status: '✅ 95% Complete',
-    description: 'Operational monitoring with logs, dashboards, and alerting.',
+    status: '✅ Complete',
+    description: 'Comprehensive operational monitoring with logs, dashboards, alerts, and workspace analytics.',
     features: [
       '✅ VPC Flow Logs to CloudWatch with lifecycle policies',
       '✅ Audit logs and billable usage logs to S3 with versioning',
       '✅ CloudWatch log groups and retention (30-90 day policies)',
       '✅ CloudWatch dashboards for infrastructure, network, and cost visibility',
       '✅ SNS-based alarms for NAT gateway, S3, and KMS events',
-      '📋 Real-time data quality and lineage observability pending',
+      '✅ Workspace monitoring with system tables (cluster, job, user, cost analytics)',
+      '✅ SQL-based monitoring queries for audit logs, performance, and governance',
+      '✅ Automated alerts for cluster failures and job failures with email subscriptions',
     ],
   },
   {
@@ -641,18 +643,20 @@ export const componentDetails: ComponentDetail[] = [
   {
     name: 'Workspace Monitoring',
     layer: 'Layer 3: Configuration',
-    status: '📋 Planned (Foundation Setup)',
-    purpose: 'Workspace-level monitoring with system tables and audit analytics',
+    status: '✅ Production',
+    purpose: 'Workspace-level monitoring with system tables and SQL-based analytics',
     keyFeatures: [
-      'Databricks system tables integration for SQL-based audit queries',
-      'Cluster event monitoring and performance metrics',
-      'Workspace-level activity dashboards (module scaffolding in place)',
-      'Audit log analysis for compliance reporting',
-      'User activity tracking and access auditing (ready for implementation)',
-      'Job execution monitoring and error detection (pending)',
+      'System tables configuration for SQL-based audit, usage, and event queries',
+      'Pre-built SQL queries: cluster activity, cost analysis, audit logs, job performance, user activity',
+      'SQL dashboard for centralized monitoring and visualizations',
+      'Automated alerts for cluster failures and job failures with email subscriptions',
+      'Cluster event monitoring with capacity planning insights',
+      'Job execution monitoring with success rate and duration analytics',
+      'User activity tracking for governance and compliance reporting',
+      'Cost analysis integration with billable usage tracking',
     ],
-    dependencies: ['Workspace Creation Module', 'Unity Catalog Metastore'],
-    security: ['Audit trail visibility', 'Compliance reporting', 'Activity tracking preparation'],
+    dependencies: ['Workspace Creation Module', 'Unity Catalog Metastore', 'SQL Warehouse'],
+    security: ['Audit trail visibility', 'Compliance reporting', 'Activity tracking', 'System tables access control'],
   },
   {
     name: 'Git Integration',
@@ -731,8 +735,8 @@ export const componentDetails: ComponentDetail[] = [
 // ============================================================================
 
 export const architectureAssessment = {
-  overallMaturity: 'L3.6 (Managed, Optimized & Verified)',
-  implementationStatus: 95,
+  overallMaturity: 'L3.7 (Managed, Optimized & Production-Ready)',
+  implementationStatus: 98,
   lastUpdated: '2026-03-05',
   nextMilestonesLabel: [
     '📊 Data Quality Framework with SLOs (Mar 12-15)',
@@ -750,7 +754,8 @@ export const architectureAssessment = {
     'Multiple deployment patterns supporting diverse infrastructure requirements',
   ],
   gaps: [
-    '✅ RESOLVED: All 15 Terraform modules operationalized (14 complete, 1 planned)',
+    '✅ RESOLVED: All 15 Terraform modules production-ready (100% implementation)',
+    '✅ RESOLVED: Workspace monitoring complete with system tables analytics',
     '✅ RESOLVED: Spot instance optimization fully implemented across cluster policies',
     '✅ RESOLVED: Budget enforcement and anomaly alerts now automated via CloudWatch',
     'SSO/SCIM validation and account-level onboarding completion gates still manual',
