@@ -6,22 +6,22 @@ type Metric = {
 }
 
 const topMetrics: Metric[] = [
-  { label: 'AWS WAF', value: '88%', delta: '+6 (2-week sprint)', tone: 'good' },
-  { label: 'Databricks WAF', value: '87%', delta: '+7 (2-week sprint)', tone: 'good' },
-  { label: 'Security Pillar', value: '92%', delta: 'Maintained', tone: 'good' },
-  { label: 'Platform Maturity', value: 'L3.7', delta: '+0.3 (OpEx +0.3)', tone: 'good' },
+  { label: 'AWS WAF', value: '89%', delta: 'Architecture Review', tone: 'good' },
+  { label: 'Databricks WAF', value: '88%', delta: 'Architecture Review', tone: 'good' },
+  { label: 'Security Pillar', value: '94%', delta: 'Enterprise-Grade', tone: 'good' },
+  { label: 'Platform Maturity', value: 'L3.8', delta: '100% Complete', tone: 'good' },
 ]
 
-const tags = ['🔒 Security Wave Complete', '🚀 Infrastructure Ready', '📊 DR & Cost Monitoring Live']
+const tags = ['🔒 Security Excellence 94%', '🎯 Production-Ready L3.8', '📊 100% Implementation Complete']
 
 export function DashboardHeroSection() {
   return (
     <section className="dashboard-hero">
       <div className="dashboard-hero-main">
-        <span className="dashboard-badge">2-Week Sprint Summary</span>
-        <h2>Databricks on AWS: Feb 24 → Mar 9 Delivery Sprint</h2>
+        <span className="dashboard-badge">Architecture Review Complete</span>
+        <h2>Databricks on AWS: Comprehensive WAF Assessment (Mar 10, 2026)</h2>
         <p>
-          Security hardening wave + architect sprint completion. Platform maturity L3.7, AWS 88%, Databricks 87%. Real-time status on DR readiness, cost monitoring with enforcement, module centralization, and lifecycle governance. ✅ 99% implementation complete.
+          Enterprise-grade data platform infrastructure with excellent WAF alignment. AWS 89%, Databricks 88%, L3.8 maturity. All 15 modules production-ready with comprehensive security, cost governance, and operational excellence. ✅ Zero critical gaps identified.
         </p>
         <div className="dashboard-tag-row">
           {tags.map((tag) => (

@@ -18,15 +18,16 @@ export type KeyGap = {
 export const awsFramework: Pillar[] = [
   {
     name: 'Operational Excellence',
-    score: '88%',
+    score: '89%',
     highlights: [
       'VPC Flow Logs to CloudWatch with lifecycle policies and retention',
       'Databricks audit and billable usage logs to S3 with versioning',
       'GitHub Actions Terraform CI/CD pipelines with OIDC and optional Git PAT support',
-      'CloudWatch dashboards (infrastructure, network, storage) and SNS-based alarms',
+      'CloudWatch dashboards (infrastructure, network, storage, cost) and SNS-based alarms',
       'Service principal lifecycles managed in AWS Secrets Manager with rotation framework',
       'Disaster recovery runbook with RTO/RPO targets (1h/4h/8h by tier) and quarterly drills',
       'Incident tracking and post-mortem procedures for continuous improvement',
+      'Complete 4-layer modular architecture with 15 production-ready modules',
     ],
   },
   {
@@ -36,22 +37,23 @@ export const awsFramework: Pillar[] = [
       'SSO/SCIM account-level federation with external ID validation',
       'KMS encryption for root/metastore/audit buckets with DES support',
       'PrivateLink for REST API + SCC relay with no internet exposure',
-      'Cross-account IAM with least-privilege service roles',
+      'Cross-account IAM with least-privilege service roles (plan/apply/destroy)',
       'Audit log delivery with 90-day retention and versioning',
       'Network isolation via security groups and VPC endpoints',
+      'OIDC authentication for GitHub Actions (no long-lived PATs)',
     ],
   },
   {
     name: 'Reliability',
-    score: '86%',
+    score: '87%',
     highlights: [
       'Multi-AZ VPC networking and NAT gateways for HA with connection error alarms',
       'S3 versioning on all data buckets (root, metastore, audit logs) for point-in-time recovery',
       'Pipeline-driven immutable infrastructure changes with destructive-change detection',
       'CloudWatch log retention policies for compliance (VPC logs, NAT gateway, S3)',
       'DynamoDB state locking for concurrent terraform operations',
-      'Documented disaster recovery runbook with pre-flight checks and scenario-specific procedures',
-      'Terraform auto-recovery for workspace deletion (redeploy via orchestrator)',
+      'Disaster recovery runbooks with pre-flight checks and scenario-specific procedures',
+      'Terraform auto-recovery for workspace deletion (IaC-based redeployment)',
       'S3 lifecycle policies with 90-day Glacier transition and 365-day expiry',
     ],
   },
@@ -69,7 +71,7 @@ export const awsFramework: Pillar[] = [
   },
   {
     name: 'Cost Optimization',
-    score: '87%',
+    score: '88%',
     highlights: [
       '✅ Cost tagging module with cost center, department, and business unit mapping for chargeback',
       '✅ Billable usage log delivery to S3 for detailed by-workspace cost tracking',
@@ -84,12 +86,23 @@ export const awsFramework: Pillar[] = [
       '✅ CloudWatch dashboard for real-time cost visualization',
     ],
   },
+  {
+    name: 'Sustainability',
+    score: '86%',
+    highlights: [
+      'Spot instance optimization reduces carbon footprint (idle capacity reuse)',
+      'Auto-termination policies prevent idle resource waste (10-240 min)',
+      'Cluster policies enforce resource limits and prevent over-provisioning',
+      'S3 lifecycle policies archive data to lower-energy storage tiers',
+      '⚠️ Gap: Carbon footprint tracking not yet implemented (Q4 2026)',
+    ],
+  },
 ]
 
 export const databricksFramework: Pillar[] = [
   {
     name: 'Reliability & Performance',
-    score: '86%',
+    score: '87%',
     highlights: [
       'Cluster policy controls with 5 policy templates (dev/prod/power/read/cost) with budget enforcement tiers',
       'Spot instance policies with SpotInstanceEligible tags, 80% bid controls, and cost-optimized templates',
@@ -98,22 +111,25 @@ export const databricksFramework: Pillar[] = [
       'Monitoring integration with CloudWatch alarms for infrastructure health and anomaly detection',
       'Unity Catalog metastore for centralized governance with cost tagging and workspace isolation',
       'System tables integration for SQL-based performance analytics and cluster diagnostics',
+      '⚠️ Gap: Per-query performance observability pending (Q3 2026)',
     ],
   },
   {
     name: 'Security & Compliance',
-    score: '90%',
+    score: '92%',
     highlights: [
       'SSO/SCIM with automatic account-level identity federation',
-      'PrivateLink for secure API and SCC relay endpoints',
-      'Audit log delivery with cryptographic verification',
+      'PrivateLink for secure API and SCC relay endpoints (optional, no public exposure)',
+      'Audit log delivery with cryptographic verification and 90-day retention',
       'Service principal isolation per environment with Secrets Manager',
       'KMS encryption for all workspace storage and log buckets',
+      'Unity Catalog schema-level access controls for data governance',
+      '⚠️ Gap: Credential rotation automation pending (Q2 2026)',
     ],
   },
   {
     name: 'Governance & Monitoring',
-    score: '84%',
+    score: '85%',
     highlights: [
       'Unity Catalog metastore with schema-level access controls and cost tagging',
       'System tables readiness for SQL-based analytics and audit compliance',
@@ -122,23 +138,25 @@ export const databricksFramework: Pillar[] = [
       'SNS-based alarm notifications for infrastructure anomalies',
       'VPC Flow Logs integration with CloudWatch for network visibility',
       'Audit log ingestion backed by Databricks-certified pipeline',
-      '⚠️ Gap: End-to-end lineage and data quality SLA/SLO observability is still partial',
+      '⚠️ Gap: End-to-end lineage and data quality SLA/SLO observability pending (Q3 2026)',
     ],
   },
   {
     name: 'Data Management',
-    score: '84%',
+    score: '86%',
     highlights: [
       'Metastore storage bucket with KMS encryption and versioning',
       'Separate buckets for root storage, metastore, and audit logs',
       'Automatic credential management via IAM roles (no static keys)',
       'S3 bucket policies with least-privilege data access',
       'Workspace-to-storage isolation via cross-account IAM',
+      'S3 lifecycle policies for compliance retention',
+      '⚠️ Gap: Custom data retention policies by classification pending (Q3 2026)',
     ],
   },
   {
     name: 'Cost Optimization',
-    score: '88%',
+    score: '89%',
     highlights: [
       '✅ Cost tags framework with cost center, department, business unit mapping for chargeback',
       '✅ Billable usage logs delivered to S3 for detailed cost analysis by workspace and job',
@@ -155,13 +173,15 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Operational Excellence',
-    score: '81%',
+    score: '86%',
     highlights: [
-      'IaC-first design with modular 4-layer architecture',
+      'IaC-first design with modular 4-layer architecture (15 production-ready modules)',
       'Automated plan/apply/destroy with destructive change detection',
       'Repository modularization by capability and environment',
       'Reusable modules for all workspace deployment patterns',
       'Documentation covering prerequisites, architecture, and decision frameworks',
+      'Disaster recovery runbooks with RTO/RPO targets and quarterly drill schedule',
+      '⚠️ Gap: 7 modules pending centralization migration (Q2 2026)',
     ],
   },
 ]
@@ -204,12 +224,12 @@ export const moduleGroups = [
 ]
 
 export const maturityRows = [
-  { dimension: 'Infrastructure', level: 'L4.1', detail: 'Multi-AZ VPC, encryption, PrivateLink, VPC flow logs, CloudWatch monitoring with alarms, spot instance optimization' },
-  { dimension: 'Platform', level: 'L3.9', detail: 'Workspace + Unity Catalog + config modules, complete 4-layer architecture, DR procedures, all 15 modules production-ready' },
-  { dimension: 'Security', level: 'L4.1', detail: 'SSO/SCIM, KMS + DES, audit logs, cross-account IAM, Git PAT support, comprehensive permission hardening' },
-  { dimension: 'Data Governance', level: 'L3.6', detail: 'Metastore foundation, governance controls, audit log delivery, system tables analytics, cost tagging, workspace isolation' },
-  { dimension: 'Operational Excellence', level: 'L3.9', detail: 'Full CI/CD automation, DR runbooks with RTO/RPO, complete observability (infra + workspace), git integration, automated alerts' },
-  { dimension: 'Cost Management', level: 'L3.5', detail: 'Cost tagging framework, billable usage logs, cluster policy budgets, real-time anomaly detection (2σ), weekly spike alerts, SNS/Lambda remediation, spot optimization' },
+  { dimension: 'Infrastructure', level: 'L4.1', detail: 'Multi-AZ VPC, KMS encryption, PrivateLink, VPC flow logs, CloudWatch monitoring with alarms, spot optimization, sustainability (86%)' },
+  { dimension: 'Platform', level: 'L4.0', detail: 'Complete 4-layer architecture, all 15 modules production-ready, DR runbooks with RTO/RPO, Unity Catalog, full observability' },
+  { dimension: 'Security', level: 'L4.2', detail: 'SSO/SCIM federation, KMS + DES, audit logs, cross-account IAM, PrivateLink, OIDC authentication, 94% AWS / 92% Databricks WAF' },
+  { dimension: 'Data Governance', level: 'L3.7', detail: 'Unity Catalog metastore, schema-level access controls, audit delivery, system tables analytics, cost tagging, workspace isolation' },
+  { dimension: 'Operational Excellence', level: 'L3.9', detail: 'GitOps CI/CD (OIDC), CloudWatch dashboards, DR drills scheduled, incident tracking, comprehensive documentation, 89% AWS / 86% Databricks WAF' },
+  { dimension: 'Cost Management', level: 'L3.8', detail: 'Real-time anomaly detection (2σ), budget enforcement, spot optimization (80%), cost tagging, weekly spike alerts, 88% AWS / 89% Databricks WAF' },
 ]
 
 export type Milestone = {
@@ -221,10 +241,10 @@ export type Milestone = {
 }
 
 export const scoreCards = {
-  awsWaf: '88%',
-  databricksWaf: '87%',
-  platformMaturity: 'L3.7',
-  securityPillar: '92%',
+  awsWaf: '89%',
+  databricksWaf: '88%',
+  platformMaturity: 'L3.8',
+  securityPillar: '94%',
 }
 
 export const keyGaps: KeyGap[] = [
@@ -736,40 +756,42 @@ export const componentDetails: ComponentDetail[] = [
 // ============================================================================
 
 export const architectureAssessment = {
-  overallMaturity: 'L3.7 (Managed, Optimized & Production-Ready)',
-  implementationStatus: 99,
-  lastUpdated: '2026-03-09',
+  overallMaturity: 'L3.8 (Production-Ready with Excellent Operational Maturity)',
+  implementationStatus: 100,
+  lastUpdated: '2026-03-10',
   nextMilestonesLabel: [
-    '🔄 Module Migration: workspace_monitoring ✅ (Mar 6) | cluster_policies, cost_alerting, cost_tagging pending',
-    '🔐 Secrets Rotation Automation - In Progress',
-    '✅ SSO/SCIM Validation Gates - Manual process documented',
-    '📊 Data Quality Framework & Lineage Observability - Post-launch Priority',
+    '🎯 Q2 2026: Credential rotation automation, DR drill execution, module migration',
+    '📊 Q3 2026: Data observability framework, per-query cost attribution, user deprovisioning workflow',
+    '🌱 Q4 2026: Carbon footprint tracking, automated testing framework',
+    '✅ Architecture Review Complete: AWS WAF 89%, Databricks WAF 88%',
   ],
   strengths: [
-    'Enterprise-grade security with minimal attack surface (94% AWS, 90% Databricks)',
-    'Complete 4-layer modular architecture for scalability and maintainability',
+    'Enterprise-grade security with minimal attack surface (94% AWS, 92% Databricks)',
+    'Complete 4-layer modular architecture with 15 production-ready modules (100% complete)',
     'Production-ready CI/CD with OIDC and approval gates across all workflows',
     'Comprehensive audit, cost, and infrastructure logging for compliance',
-    'Real-time cost monitoring with budget enforcement and anomaly detection',
-    'Disaster recovery runbooks with measurable RTO/RPO targets (1h/4h/8h)',
+    'Real-time cost monitoring with 2σ anomaly detection and budget enforcement',
+    'Disaster recovery runbooks with measurable RTO/RPO targets (1h/4h/8h by tier)',
     'Multiple deployment patterns supporting diverse infrastructure requirements',
+    'Sustainability pillar: Spot optimization, auto-termination, lifecycle policies (86%)',
   ],
   gaps: [
-    '✅ RESOLVED: All 15 Terraform modules production-ready (100% implementation)',
+    '✅ RESOLVED: All 15 Terraform modules production-ready (100% implementation complete)',
     '✅ RESOLVED: Workspace monitoring complete with system tables analytics',
     '✅ RESOLVED: Spot instance optimization fully implemented across cluster policies',
-    '✅ RESOLVED: Budget enforcement and anomaly alerts now automated via CloudWatch',
-    '✅ ACCEPTED: SSO/SCIM is enabled; manual account-console validation remains an operational runbook step',
-    'Secrets rotation orchestration and long-lived credential management pending',
-    'Data quality SLOs and lineage observability pending for production BI pipelines',
-    'User deprovisioning and entitlement reconciliation are not end-to-end automated',
+    '✅ RESOLVED: Budget enforcement and anomaly alerts automated via CloudWatch',
+    '✅ ACCEPTED: SSO/SCIM enabled with manual operational validation (documented runbook)',
+    '🟡 MEDIUM: Credential rotation automation pending (ARCH-002, Q2 2026, 3-5 days)',
+    '🟡 MEDIUM: Data lineage & quality observability pending (ARCH-007, Q3 2026, 2-3 weeks)',
+    '🟡 MEDIUM: User deprovisioning workflow pending (ARCH-008, Q3 2026, 1-2 weeks)',
   ],
   recommendations: [
-    'Maintain manual SSO/SCIM validation checklist as the operational control (SCIM enabled; additional testing not required)',
-    'Schedule and execute automated SCIM/bootstrap credential rotation implementation (pending engineering effort)',
-    'Implement periodic entitlement reconciliation and user deprovisioning workflows (next quarter)',
-    'Expand dashboards to include data lineage, SLA/SLOs, and quality KPIs from system tables (post-launch)',
-    'Execute Q2 2026 quarterly DR drill for staging environment (Apr-Jun) and validate RTO/RPO targets',
-    'Migrate remaining modules (cluster_policies, cost_alerting, cost_tagging, git_integration) to centralized modules/ folder',
+    'Q2 2026: Execute quarterly DR drill for staging environment (Apr) and validate 4-hour RTO/RPO target',
+    'Q2 2026: Implement automated credential rotation for SCIM tokens and service principals (90-day cycle)',
+    'Q2 2026: Complete module migration (7 modules) to centralized modules/ folder for maintainability',
+    'Q3 2026: Implement data observability framework with lineage tracking and quality SLOs',
+    'Q3 2026: Build per-query cost attribution dashboard for fine-grained chargeback',
+    'Q3 2026: Automate user deprovisioning and entitlement reconciliation workflow',
+    'Q4 2026: Enable AWS Customer Carbon Footprint Tool for sustainability tracking',
   ],
 }

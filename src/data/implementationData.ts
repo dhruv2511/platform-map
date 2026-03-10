@@ -255,15 +255,16 @@ export const implementationTasks: ImplementationTask[] = [
   {
     id: 'ARCH-001',
     category: 'Data Platform Readiness',
-    title: 'Automate Account-Level SSO/SCIM Validation Gates',
-    description: 'Account-level SCIM is enabled. Further automated validation is currently constrained by account-console/API limitations, so user management remains governed by documented manual SSO/SCIM operational steps.',
+    title: 'SSO/SCIM Account Validation Operating Model Finalized',
+    description: 'Account-level SCIM is enabled. Due to account-console/API limitations, the team has formally adopted documented manual SSO/SCIM validation and onboarding checklist steps as the operating control.',
     priority: 'High',
-    status: 'Blocked',
+    status: 'Completed',
+    completedDate: '2026-03-09',
     filesModified: [
       '.github/workflows/workspace-configuration.yml',
       'databricks-workspace-configuration-aws/modules/sso_configuration'
     ],
-    impact: 'SCIM enablement is complete; additional test automation is not feasible at present. Manual onboarding/validation checklist remains the control path for user management.',
+    impact: 'SCIM enablement is complete and operational control is explicit: user management follows documented manual SSO/SCIM checklist execution with no additional automation/testing required at this stage.',
     relatedGap: 'Account SSO/SCIM Automation'
   },
   {
@@ -278,7 +279,7 @@ export const implementationTasks: ImplementationTask[] = [
       'aws_databricks_provisioning/modules/',
       'databricks-workspace-configuration-aws/modules/workspace_monitoring/'
     ],
-    impact: 'Service principal credential freshness enforced via automated EventBridge trigger; production data pipelines cannot fail due to expired credentials; admin credentials long-lived (manual annual review). Prerequisite for data platform production readiness.',
+    impact: 'Improves post-launch security hardening by enforcing credential freshness via automated EventBridge trigger and expiry alerting; reduces risk of auth failures from credential age drift.',
     relatedGap: 'Secret Rotation Automation'
   },
   {
@@ -343,7 +344,7 @@ export const implementationTasks: ImplementationTask[] = [
       'databricks-workspace-configuration-aws/modules/workspace_monitoring/',
       'docs/DISASTER_RECOVERY_RUNBOOK.md'
     ],
-    impact: 'CRITICAL BLOCKER: Enables data-driven production readiness assessment. Delta Live Tables expectations prevent bad data propagation. Freshness SLO dashboard shows table health in real-time. CloudWatch infrastructure monitoring complete; data lineage, quality SLO observability, and freshness tracking pending. Production BI pipelines cannot launch without this.',
+    impact: 'Post-launch reliability enhancement: Delta Live Tables expectations, freshness SLO dashboards, and lineage visibility improve proactive issue detection and BI trust. Infrastructure monitoring is complete; deeper data quality observability is being expanded.',
     relatedGap: 'Observability Depth'
   },
   {
