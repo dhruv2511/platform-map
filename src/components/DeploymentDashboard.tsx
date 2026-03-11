@@ -1,3 +1,5 @@
+'use client'
+
 import { componentDetails, architectureAssessment, keyGaps } from '../data/platformData'
 
 export default function DeploymentDashboard() {

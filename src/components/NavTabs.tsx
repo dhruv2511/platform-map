@@ -1,4 +1,7 @@
-import { NavLink } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const tabs = [
   { to: '/', label: 'Full Roadmap' },
@@ -13,18 +16,29 @@ const tabs = [
 ]
 
 export function NavTabs() {
+  const pathname = usePathname()
+
+  // Strip basePath so comparison works both locally and on GitHub Pages
+  const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
+  const relativePath = pathname.replace(base, '') || '/'
+
   return (
     <nav className="nav-tabs">
-      {tabs.map((tab) => (
-        <NavLink
-          key={tab.to}
-          to={tab.to}
-          end={tab.to === '/'}
-          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-        >
-          {tab.label}
-        </NavLink>
-      ))}
+      {tabs.map((tab) => {
+        const isActive =
+          tab.to === '/'
+            ? relativePath === '/'
+            : relativePath === tab.to || relativePath.startsWith(tab.to + '/')
+        return (
+          <Link
+            key={tab.to}
+            href={tab.to}
+            className={`nav-link ${isActive ? 'active' : ''}`}
+          >
+            {tab.label}
+          </Link>
+        )
+      })}
     </nav>
   )
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { motion } from 'framer-motion'
 import { FiCheck, FiClock, FiAlertCircle } from 'react-icons/fi'
 import { useDashboardStore } from '../../store/dashboardStore'

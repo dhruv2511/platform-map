@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 import { implementationTasks, identifiedGaps } from '../data/implementationData'
 import type { ImplementationTask, IdentifiedGap } from '../data/implementationData'

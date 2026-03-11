@@ -36,12 +36,13 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          VITE_BASE_URL: /platform-map/
+          NEXT_PUBLIC_DEPLOY_TARGET: static
+          NEXT_PUBLIC_BASE_PATH: /platform-map
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'dist'
+          path: 'out'
 
   deploy:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
