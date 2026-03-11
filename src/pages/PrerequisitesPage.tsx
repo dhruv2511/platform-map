@@ -755,3 +755,5 @@ aws ec2 describe-vpcs       # Can list VPCs`}
     </section>
   )
 }
+
+export default PrerequisitesPage

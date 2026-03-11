@@ -20,7 +20,7 @@ export function NavTabs() {
 
   // Strip basePath so comparison works both locally and on GitHub Pages
   const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
-  const relativePath = pathname.replace(base, '') || '/'
+  const relativePath = (pathname ?? '/').replace(base, '') || '/'
 
   return (
     <nav className="nav-tabs">

@@ -1,0 +1,14 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/analyze/route": "app/api/analyze/route.js",
+  "/aws-framework/page": "app/aws-framework/page.js",
+  "/databricks-framework/page": "app/databricks-framework/page.js",
+  "/implementation/page": "app/implementation/page.js",
+  "/modules/page": "app/modules/page.js",
+  "/deployment/page": "app/deployment/page.js",
+  "/prerequisites-tracker/page": "app/prerequisites-tracker/page.js",
+  "/page": "app/page.js",
+  "/maturity/page": "app/maturity/page.js",
+  "/overview/page": "app/overview/page.js",
+  "/prerequisites/page": "app/prerequisites/page.js"
+}
