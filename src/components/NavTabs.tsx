@@ -8,6 +8,7 @@ const tabs = [
   { to: '/overview', label: 'Overview' },
   { to: '/deployment', label: '📊 Deployment Status' },
   { to: '/implementation', label: '🔧 Implementation' },
+  { to: '/provider-review', label: '🧩 Provider Review' },
   { to: '/prerequisites-tracker', label: '✅ Prerequisites' },
   { to: '/aws-framework', label: 'AWS Framework' },
   { to: '/databricks-framework', label: 'Databricks Framework' },

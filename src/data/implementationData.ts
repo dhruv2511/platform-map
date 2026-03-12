@@ -375,6 +375,140 @@ export const implementationTasks: ImplementationTask[] = [
     impact: 'Compensates API limitation with enforceable governance and auditable controls',
     relatedGap: 'Git Source Governance'
   },
+  {
+    id: 'ARCH-009',
+    category: 'Data Platform Readiness',
+    title: 'Wave 1: UC Data Access Baseline Implemented',
+    description: 'Extended Unity Catalog baseline with storage credentials, external locations, and external volumes in workspace configuration.',
+    priority: 'Critical',
+    status: 'Completed',
+    completedDate: '2026-03-12',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/unity_catalog_baseline/main.tf',
+      'databricks-workspace-configuration-aws/modules/unity_catalog_baseline/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf'
+    ],
+    impact: 'Codifies UC external data-access primitives in IaC and removes manual onboarding drift for platform domains.',
+    relatedGap: 'UC Data Access Governance'
+  },
+  {
+    id: 'ARCH-010',
+    category: 'Security',
+    title: 'Wave 1: Reusable UC Grant Templates Implemented',
+    description: 'Added template-driven grants for catalogs, schemas, storage credentials, external locations, and volumes.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-12',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/unity_catalog_baseline/main.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/vars/dev.tfvars'
+    ],
+    impact: 'Standardizes least-privilege grants and accelerates environment/domain governance onboarding.',
+    relatedGap: 'Access Template Standardization'
+  },
+  {
+    id: 'ARCH-011',
+    category: 'Security',
+    title: 'Wave 1: Workspace Hardening Baseline Implemented',
+    description: 'Introduced workspace hardening module with IP access list controls, secret scopes, secrets, ACLs, and hardening workspace settings.',
+    priority: 'Critical',
+    status: 'Completed',
+    completedDate: '2026-03-12',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_hardening/main.tf',
+      'databricks-workspace-configuration-aws/modules/workspace_hardening/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf'
+    ],
+    impact: 'Closes baseline workspace security control gaps and introduces provider-backed secret governance.',
+    relatedGap: 'Workspace Security Hardening'
+  },
+  {
+    id: 'ARCH-012',
+    category: 'Infrastructure',
+    title: 'Wave 1: auth_profile Activated in Provider Runtime',
+    description: 'Made auth_profile strategy effective in provider blocks across Part A, Part B, and Part C (including OIDC-first behavior).',
+    priority: 'Critical',
+    status: 'Completed',
+    completedDate: '2026-03-12',
+    filesModified: [
+      'aws_databricks_provisioning/databricks_deployment/providers.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/providers.tf',
+      'databricks-service-principal-bootstrap/providers.tf'
+    ],
+    impact: 'Aligns runtime authentication behavior with platform auth policy contract and improves secretless pipeline posture.',
+    relatedGap: 'Authentication Modernization'
+  },
+  {
+    id: 'ARCH-013',
+    category: 'Infrastructure',
+    title: 'Wave 1: Dedicated UC External Data IAM Role Path',
+    description: 'Added dedicated AWS IAM role/policy outputs for Unity Catalog external data access and wired Part B to consume this role for storage credentials.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-12',
+    filesModified: [
+      'aws_databricks_provisioning/modules/dbx_metastore/storage_config.tf',
+      'aws_databricks_provisioning/databricks_deployment/outputs.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/remote_state.tf'
+    ],
+    impact: 'Improves role separation for UC access and stabilizes storage credential/external location provisioning path.',
+    relatedGap: 'UC IAM Role Pattern'
+  },
+  {
+    id: 'ARCH-014',
+    category: 'Infrastructure',
+    title: 'Wave 2: Compute Runtime Standardization',
+    description: 'Introduce instance pools, global init scripts, and optional curated platform cluster baselines.',
+    priority: 'High',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/'
+    ],
+    impact: 'Improves runtime consistency, startup performance, and cluster governance baseline.',
+    relatedGap: 'Compute Runtime Standardization'
+  },
+  {
+    id: 'ARCH-015',
+    category: 'Data Platform Readiness',
+    title: 'Wave 2: Data Engineering Starter Baseline',
+    description: 'Add optional platform-owned starter baseline for pipelines and repo/notebook assets.',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/'
+    ],
+    impact: 'Enables consistent starter patterns for platform-owned data engineering workloads.',
+    relatedGap: 'Data Engineering Baseline'
+  },
+  {
+    id: 'ARCH-016',
+    category: 'Operations',
+    title: 'Wave 3: SQL Resource Model Standardization',
+    description: 'Standardize SQL resource families and naming across monitoring and governance modules.',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-workspace-configuration-aws/modules/workspace_monitoring/'
+    ],
+    impact: 'Reduces provider drift risk and improves long-term SQL IaC maintainability.',
+    relatedGap: 'SQL Governance Modernization'
+  },
+  {
+    id: 'ARCH-017',
+    category: 'Infrastructure',
+    title: 'Wave 3: Phased Databricks Provider Upgrade',
+    description: 'Upgrade provider in controlled phases (Part C → Part A → Part B) with targeted compatibility testing.',
+    priority: 'Medium',
+    status: 'Planned',
+    filesModified: [
+      'databricks-service-principal-bootstrap/versions.tf',
+      'aws_databricks_provisioning/databricks_deployment/versions.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/versions.tf'
+    ],
+    impact: 'Enables access to newer provider capabilities while controlling upgrade blast radius.',
+    relatedGap: 'Provider Version Currency'
+  },
 
   // Data Platform Architect Tasks (Q2-Q4 2026)
   {
@@ -674,6 +808,50 @@ export const identifiedGaps: IdentifiedGap[] = [
     status: 'Open',
     relatedTasks: ['ARCH-008'],
     impact: 'Repository governance assurance depends on manual admin checks'
+  },
+  {
+    id: 'GAP-027',
+    category: 'Performance',
+    title: 'UC Data Access Governance Baseline',
+    currentState: 'UC structure baseline existed, but external data-access objects and reusable grants were incomplete',
+    targetState: 'UC data access primitives and reusable grants templates implemented across baseline objects',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-009', 'ARCH-010', 'ARCH-013'],
+    impact: 'Improves onboarding consistency, least-privilege governance, and data access repeatability'
+  },
+  {
+    id: 'GAP-028',
+    category: 'Security',
+    title: 'Workspace Hardening Baseline Coverage',
+    currentState: 'Workspace hardening resources were largely absent from active Terraform baseline',
+    targetState: 'IP access lists, secret scopes, secrets, ACLs, and hardening settings codified in workspace baseline',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-011'],
+    impact: 'Improves workspace security posture and operational secret governance controls'
+  },
+  {
+    id: 'GAP-029',
+    category: 'Security',
+    title: 'Provider-Level Auth Modernization',
+    currentState: 'auth_profile existed as contract but was not consistently effective at provider runtime',
+    targetState: 'Part A/B/C provider blocks enforce auth_profile behavior including OIDC-first paths',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-012'],
+    impact: 'Reduces authentication drift and aligns runtime behavior with platform auth policy'
+  },
+  {
+    id: 'GAP-030',
+    category: 'Performance',
+    title: 'Runtime and SQL Standardization Waves',
+    currentState: 'Compute runtime baseline and SQL model standardization are not yet implemented consistently',
+    targetState: 'Wave 2 and Wave 3 deliver runtime baseline controls, SQL standardization, and phased provider upgrade',
+    priority: 'Medium',
+    status: 'Open',
+    relatedTasks: ['ARCH-014', 'ARCH-015', 'ARCH-016', 'ARCH-017'],
+    impact: 'Consistency, performance governance, and provider-evolution readiness remain dependent on next-wave delivery'
   },
 
   // Data Platform Governance Gaps (Q2-Q4 2026)
