@@ -8,17 +8,17 @@ export function ArchitectureSection() {
     {
       title: '✅ Layer 4: Workspace Configuration',
       details:
-        'Users/groups, permissions, SSO/SCIM modules, repo-level separation from infrastructure lifecycle.',
+        'Users/groups, permissions, SSO/SCIM modules, repo-level separation from infrastructure lifecycle, plus Lakeview workspace monitoring and system-table observability.',
     },
     {
       title: '✅ Layer 3: Databricks Platform',
       details:
-        'Workspace creation, Unity Catalog, cross-account IAM, storage and credential setup, optional PrivateLink.',
+        'Workspace creation, Unity Catalog, cross-account IAM, storage and credential setup, optional PrivateLink, and account-level audit log delivery.',
     },
     {
       title: '✅ Layer 2: Cloud Networking & Storage',
       details:
-        'VPC/subnets, NAT/IGW, endpoints, firewall options, encrypted and versioned S3 foundations.',
+        'VPC/subnets, NAT/IGW, endpoints, firewall options, encrypted and versioned S3 foundations, and Databricks-compliant outbound security-group egress.',
     },
     {
       title: '✅ Layer 1: Backend Infrastructure',

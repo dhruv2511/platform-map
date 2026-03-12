@@ -8,7 +8,7 @@ const pulseCards = [
   {
     title: 'Architecture Maturity',
     value: 'L3.8',
-    note: 'Infrastructure L4.1, Security L4.2, Platform L4.0, OpEx L3.9',
+    note: 'Infrastructure L4.1, Security L4.2, Platform L4.0, OpEx L4.0 after monitoring and audit-log fixes',
     tone: 'indigo',
   },
   {
@@ -25,7 +25,8 @@ const timeline = [
   { date: 'Mar 3-5', title: '🚀 Architect Sprint: DR runbooks, Git PAT, cost monitoring, lifecycle tightening', state: 'done' },
   { date: 'Mar 6', title: '✅ workspace_monitoring module centralized - L3.7 infrastructure ready', state: 'done' },
   { date: 'Mar 9', title: 'Platform update: AWS 88%, Databricks 87%, L3.7, 99% implementation', state: 'done' },
-  { date: 'Mar 10', title: '🎯 Comprehensive WAF review: AWS 89%, Databricks 88%, L3.8, 100% complete', state: 'active' },
+  { date: 'Mar 10', title: '🎯 Comprehensive WAF review: AWS 89%, Databricks 88%, L3.8, 100% complete', state: 'done' },
+  { date: 'Mar 12', title: '🛠 Monitoring restored: Lakeview widgets rebuilt, system-table queries optimized, audit-log delivery and SG egress fixes applied', state: 'active' },
   { date: 'Q2 2026', title: 'Planned: Credential rotation, DR drill, module migration, user deprovisioning', state: 'pending' },
   { date: 'Q3 2026', title: 'Planned: Data observability, cost attribution, query performance analytics', state: 'pending' },
 ]

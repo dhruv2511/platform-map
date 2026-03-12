@@ -4,7 +4,7 @@ export function ModulesSection() {
       name: 'modules/networking',
       status: '✅ Production Ready',
       description: 'Unified networking module supporting standalone, firewall, hub-spoke and spoke-only patterns.',
-      features: ['4 deployment patterns', 'Security groups', 'VPC endpoints', 'Optional firewall + TGW'],
+      features: ['4 deployment patterns', 'Security groups', 'Databricks-required all-outbound egress', 'VPC endpoints', 'Optional firewall + TGW'],
     },
     {
       name: 'modules/storage',
@@ -15,8 +15,14 @@ export function ModulesSection() {
     {
       name: 'modules/audit_log_delivery',
       status: '✅ Production Ready',
-      description: 'MWS-level audit and billable usage log delivery with cross-account IAM trust.',
-      features: ['AUDIT_LOGS + BILLABLE_USAGE', 'External ID validation', 'S3 integration'],
+      description: 'MWS-level audit and billable usage log delivery with cross-account IAM trust and encrypted S3 delivery wiring.',
+      features: ['AUDIT_LOGS + BILLABLE_USAGE', 'External ID validation', 'S3 bucket policy wiring', 'S3 integration'],
+    },
+    {
+      name: 'modules/workspace_monitoring',
+      status: '✅ Operational',
+      description: 'Lakeview dashboard, SQL warehouse, system-table queries, alerts, and workspace observability for Databricks operations.',
+      features: ['Lakeview widgets restored', 'System table grants', 'Optimized aggregate queries', 'Dashboard + query resources'],
     },
     {
       name: 'modules/dbx_workspace_creation',
