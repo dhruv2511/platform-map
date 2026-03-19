@@ -18,7 +18,7 @@ export type KeyGap = {
 export const awsFramework: Pillar[] = [
   {
     name: 'Operational Excellence',
-    score: '89%',
+    score: '91%',
     highlights: [
       'VPC Flow Logs to CloudWatch with lifecycle policies and retention',
       'Databricks audit and billable usage logs to S3 with versioning',
@@ -27,7 +27,8 @@ export const awsFramework: Pillar[] = [
       'Service principal lifecycles managed in AWS Secrets Manager with rotation framework',
       'Disaster recovery runbook with RTO/RPO targets (1h/4h/8h by tier) and quarterly drills',
       'Incident tracking and post-mortem procedures for continuous improvement',
-      'Complete 4-layer modular architecture with 15 production-ready modules',
+      'Centralized terraform-modules-central registry operational with 20 reusable modules',
+      'Split networking model deployed: networking (single VPC), network_hub, and network_spoke',
     ],
   },
   {
@@ -173,24 +174,27 @@ export const databricksFramework: Pillar[] = [
   },
   {
     name: 'Operational Excellence',
-    score: '86%',
+    score: '89%',
     highlights: [
-      'IaC-first design with modular 4-layer architecture (15 production-ready modules)',
+      'IaC-first design with modular 4-layer architecture and centralized module registry',
       'Automated plan/apply/destroy with destructive change detection',
-      'Repository modularization by capability and environment',
+      'Repository modularization by capability and environment with shared module reuse',
       'Reusable modules for all workspace deployment patterns',
       'Documentation covering prerequisites, architecture, and decision frameworks',
       'Disaster recovery runbooks with RTO/RPO targets and quarterly drill schedule',
-      '⚠️ Gap: 7 modules pending centralization migration (Q2 2026)',
+      '✅ Hub-spoke networking deployed through dedicated network_hub and network_spoke modules',
+      '✅ Module centralization completed in terraform-modules-central',
     ],
   },
 ]
 
 export const moduleGroups = [
   {
-    name: 'aws_databricks_provisioning/modules',
+    name: 'terraform-modules-central (Infrastructure & Networking)',
     modules: [
       'networking',
+      'network_hub',
+      'network_spoke',
       'storage',
       'dbx_workspace_creation',
       'dbx_metastore',
@@ -200,7 +204,7 @@ export const moduleGroups = [
     ],
   },
   {
-    name: 'databricks-workspace-configuration-aws/modules',
+    name: 'terraform-modules-central (Workspace Configuration)',
     modules: [
       'sso_configuration',
       'scim_connector',
@@ -209,6 +213,7 @@ export const moduleGroups = [
       'workspace_hardening',
       'cluster_policies',
       'workspace_monitoring',
+      'workspace_sql_baseline',
       'cost_tagging',
       'git_integration',
       'cost_alerting',
@@ -227,10 +232,10 @@ export const moduleGroups = [
 
 export const maturityRows = [
   { dimension: 'Infrastructure', level: 'L4.1', detail: 'Multi-AZ VPC, KMS encryption, PrivateLink, VPC flow logs, CloudWatch monitoring with alarms, spot optimization, sustainability (86%)' },
-  { dimension: 'Platform', level: 'L4.0', detail: 'Complete 4-layer architecture, all 15 modules production-ready, DR runbooks with RTO/RPO, Unity Catalog, full observability' },
+  { dimension: 'Platform', level: 'L4.1', detail: 'Complete 4-layer architecture, centralized 20-module registry, hub-spoke split modules, DR runbooks with RTO/RPO, Unity Catalog, full observability' },
   { dimension: 'Security', level: 'L4.2', detail: 'SSO/SCIM federation, KMS + DES, audit logs, cross-account IAM, PrivateLink, OIDC authentication, 94% AWS / 92% Databricks WAF' },
   { dimension: 'Data Governance', level: 'L3.7', detail: 'Unity Catalog metastore, schema-level access controls, audit delivery, system tables analytics, cost tagging, workspace isolation' },
-  { dimension: 'Operational Excellence', level: 'L3.9', detail: 'GitOps CI/CD (OIDC), CloudWatch dashboards, DR drills scheduled, incident tracking, comprehensive documentation, 89% AWS / 86% Databricks WAF' },
+  { dimension: 'Operational Excellence', level: 'L4.0', detail: 'GitOps CI/CD (OIDC), CloudWatch dashboards, DR drills scheduled, incident tracking, centralized modules, 91% AWS / 89% Databricks WAF' },
   { dimension: 'Cost Management', level: 'L3.8', detail: 'Real-time anomaly detection (2σ), budget enforcement, spot optimization (80%), cost tagging, weekly spike alerts, 88% AWS / 89% Databricks WAF' },
 ]
 
@@ -243,9 +248,9 @@ export type Milestone = {
 }
 
 export const scoreCards = {
-  awsWaf: '89%',
-  databricksWaf: '88%',
-  platformMaturity: 'L3.8',
+  awsWaf: '90%',
+  databricksWaf: '89%',
+  platformMaturity: 'L3.9',
   securityPillar: '94%',
 }
 
@@ -359,6 +364,16 @@ export const keyGaps: KeyGap[] = [
     currentState: 'Part A/B/C provider blocks now enforce auth profile behavior including OIDC-first mode.',
     impact: 'Reduces drift between auth policy intent and runtime provider execution.',
     remediation: 'Define PAT exception governance metadata and process controls.',
+  },
+  {
+    id: 'gap-module-centralization-complete',
+    framework: 'Shared',
+    pillar: 'Operational Excellence',
+    severity: 'Low',
+    title: '✅ RESOLVED: module centralization completed with split hub/spoke networking modules',
+    currentState: 'Shared module registry now includes dedicated networking, network_hub, and network_spoke modules plus centralized workspace modules.',
+    impact: 'Improves reuse, consistency, and release governance across provisioning and workspace configuration repos.',
+    remediation: 'Keep all consuming repositories version-pinned to tagged module releases with release-note validation.',
   },
 ]
 
@@ -816,23 +831,23 @@ export const componentDetails: ComponentDetail[] = [
 // ============================================================================
 
 export const architectureAssessment = {
-  overallMaturity: 'L3.8 (Production-Ready with Excellent Operational Maturity)',
+  overallMaturity: 'L3.9 (Production-Ready with Centralized Module Operating Model)',
   implementationStatus: 100,
-  lastUpdated: '2026-03-12',
+  lastUpdated: '2026-03-18',
   nextMilestonesLabel: [
     '✅ Wave 1 (P0) complete: UC data access baseline, grants templates, workspace hardening, provider-auth profile activation',
     '🎯 Wave 2 (P1): runtime standardization (instance pools/global init scripts) and optional data engineering starter baseline',
     '📊 Wave 3 (P2): SQL resource standardization and phased provider upgrade (Part C → Part A → Part B)',
-    '✅ Architecture Review Complete: AWS WAF 89%, Databricks WAF 88%',
+    '✅ Re-review complete: AWS WAF 90%, Databricks WAF 89%, maturity L3.9',
   ],
   strengths: [
     'Enterprise-grade security with minimal attack surface (94% AWS, 92% Databricks)',
-    'Complete 4-layer modular architecture with 15 production-ready modules (100% complete)',
+    'Complete 4-layer modular architecture with centralized 20-module registry (100% complete)',
     'Production-ready CI/CD with OIDC and approval gates across all workflows',
     'Comprehensive audit, cost, and infrastructure logging for compliance',
     'Real-time cost monitoring with 2σ anomaly detection and budget enforcement',
     'Disaster recovery runbooks with measurable RTO/RPO targets (1h/4h/8h by tier)',
-    'Multiple deployment patterns supporting diverse infrastructure requirements',
+    'Split networking modules support single_vpc, hub_spoke, and spoke_only patterns cleanly',
     'Sustainability pillar: Spot optimization, auto-termination, lifecycle policies (86%)',
   ],
   gaps: [
@@ -855,7 +870,7 @@ export const architectureAssessment = {
     'Q2 2026: Add optional data engineering starter baseline for platform-owned pipeline/repo assets',
     'Q2 2026: Execute quarterly DR drill for staging environment (Apr) and validate 4-hour RTO/RPO target',
     'Q2 2026: Implement automated credential rotation for SCIM tokens and service principals (90-day cycle)',
-    'Q2 2026: Complete module migration (7 modules) to centralized modules/ folder for maintainability',
+    'Q2 2026: Enforce module release governance with pinned tags and compatibility checks across consuming repos',
     'Q3 2026: Standardize SQL resource model and naming across workspace monitoring and governance modules',
     'Q3 2026: Execute phased Databricks provider upgrade (Part C → Part A → Part B) with compatibility checks',
     'Q3 2026: Implement data observability framework with lineage tracking and quality SLOs',

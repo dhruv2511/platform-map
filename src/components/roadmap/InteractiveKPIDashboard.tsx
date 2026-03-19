@@ -9,7 +9,7 @@ const awsWafTrend = [
   { date: 'Feb 18', value: 75 },
   { date: 'Feb 21', value: 79 },
   { date: 'Feb 24', value: 82 },
-  { date: 'Feb 27', value: 84 },
+  { date: 'Mar 18', value: 90 },
 ]
 
 const databricksWafTrend = [
@@ -17,7 +17,7 @@ const databricksWafTrend = [
   { date: 'Feb 18', value: 71 },
   { date: 'Feb 21', value: 74 },
   { date: 'Feb 24', value: 76 },
-  { date: 'Feb 27', value: 78 },
+  { date: 'Mar 18', value: 89 },
 ]
 
 const securityTrend = [
@@ -25,7 +25,7 @@ const securityTrend = [
   { date: 'Feb 18', value: 88 },
   { date: 'Feb 21', value: 90 },
   { date: 'Feb 24', value: 92 },
-  { date: 'Feb 27', value: 93 },
+  { date: 'Mar 18', value: 94 },
 ]
 
 const maturityTrend = [
@@ -33,7 +33,7 @@ const maturityTrend = [
   { date: 'Feb 18', value: 2.95 },
   { date: 'Feb 21', value: 3.05 },
   { date: 'Feb 24', value: 3.2 },
-  { date: 'Feb 27', value: 3.3 },
+  { date: 'Mar 18', value: 3.9 },
 ]
 
 const completionData = [
@@ -108,25 +108,25 @@ export function InteractiveKPIDashboard() {
       <div className="kpi-grid">
         <InteractiveKPI
           title="AWS WAF Score"
-          currentValue="84%"
+          currentValue="90%"
           trend={awsWafTrend}
           color="#0B6E4F"
         />
         <InteractiveKPI
           title="Databricks WAF"
-          currentValue="78%"
+          currentValue="89%"
           trend={databricksWafTrend}
           color="#1B4965"
         />
         <InteractiveKPI
           title="Security Pillar"
-          currentValue="93%"
+          currentValue="94%"
           trend={securityTrend}
           color="#F4A261"
         />
         <InteractiveKPI
           title="Platform Maturity"
-          currentValue="L3.3"
+          currentValue="L3.9"
           trend={maturityTrend}
           color="#2A9D8F"
         />
