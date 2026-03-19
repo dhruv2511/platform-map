@@ -1,5 +1,5 @@
 export function RecentUpdatesSection() {
-  const securityWave = [
+  const foundationWave = [
     {
       title: '📊 VPC Flow Logs Integration',
       status: '✅ Complete',
@@ -12,22 +12,22 @@ export function RecentUpdatesSection() {
     },
     {
       title: '🔐 SSO/SCIM Integration',
-      status: '✅ Deployed Feb 27',
+      status: '✅ Complete',
       items: ['SAML SSO and SCIM provisioning enabled', 'IdP integration validated', 'Group mappings and admin fallback account'],
     },
     {
       title: '🔑 KMS Encryption for S3',
-      status: '✅ Deployed Feb 27',
+      status: '✅ Complete',
       items: ['Customer-managed keys with rotation', 'Root/metastore/audit buckets encrypted', 'Pipeline IAM KMS permissions refined'],
     },
     {
       title: '🔗 PrivateLink SCC + REST',
-      status: '✅ Deployed Feb 27',
+      status: '✅ Complete',
       items: ['REST API endpoint (443)', 'SCC relay endpoint (6666)', 'Multi-AZ interface endpoints'],
     },
   ]
 
-  const architectWave = [
+  const architectureWave = [
     {
       title: '🚀 DR Runbooks & RTO/RPO',
       status: '✅ Complete',
@@ -48,7 +48,7 @@ export function RecentUpdatesSection() {
     },
     {
       title: '💰 Cost Monitoring & Dashboards',
-      status: '✅ Deployed Mar 5',
+      status: '✅ Complete',
       items: ['SNS topic with email notifications to ops/finance', 'CloudWatch budget threshold alarm ($5k/month default)', 'Cost anomaly detection (ANOMALY_DETECTION_BAND 2σ)', 'Weekly cost spike alerts (25% threshold)', 'CloudWatch dashboard for real-time cost viz', 'Databricks monthly cost analysis job (1st of month)'],
       arch: 'ARCH-005',
     },
@@ -57,6 +57,12 @@ export function RecentUpdatesSection() {
       status: '✅ Deployed Mar 5',
       items: ['manage_users=true for initial workspace provisioning', 'IdP-first user creation pattern', 'Switch to false after IdP sync complete'],
       arch: 'DevOps',
+    },
+    {
+      title: '📦 Centralized Module Registry + Hub/Spoke Split',
+      status: '✅ Complete Mar 18',
+      items: ['terraform-modules-central now operational as shared registry', 'Dedicated network_hub and network_spoke modules live', 'Re-review baseline updated: AWS 90%, Databricks 89%, L3.9 maturity'],
+      arch: 'ARCH-018',
     },
   ]
 
@@ -68,9 +74,9 @@ export function RecentUpdatesSection() {
       </h3>
       
       <article>
-        <h4 style={{ paddingBottom: '1rem' }}>🔒 Feb 27 Security Hardening Wave</h4>
+        <h4 style={{ paddingBottom: '1rem' }}>🔒 Foundation Controls Wave</h4>
         <div className="feature-grid">
-          {securityWave.map((update) => (
+          {foundationWave.map((update) => (
             <article className="update-card" key={update.title}>
               <h4>{update.title}</h4>
               <div className="trigger-chip">{update.status}</div>
@@ -85,9 +91,9 @@ export function RecentUpdatesSection() {
       </article>
 
       <article style={{ marginTop: '2rem' }}>
-        <h4 style={{ paddingBottom: '1rem' }}>🚀 Mar 3-5 Architect Sprint Wave</h4>
+        <h4 style={{ paddingBottom: '1rem' }}>🚀 Architecture & Platform Evolution Wave</h4>
         <div className="feature-grid">
-          {architectWave.map((update) => (
+          {architectureWave.map((update) => (
             <article className="update-card" key={update.title}>
               <h4>{update.title}</h4>
               <div className="trigger-chip">{update.status}</div>
@@ -107,7 +113,7 @@ export function RecentUpdatesSection() {
       </article>
 
       <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-        <h4>📈 2-Week Impact Summary</h4>
+        <h4>📈 Program Impact Summary</h4>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>6/8</div>
@@ -118,12 +124,12 @@ export function RecentUpdatesSection() {
             <div style={{ fontSize: '0.9rem', color: '#666' }}>Security Milestones (100%)</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3498db' }}>+6%</div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Framework Score (AWS +3%, DBX +3%)</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3498db' }}>90 / 89</div>
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>Current WAF Baseline (AWS / Databricks)</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#9b59b6' }}>L3.5</div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Platform Maturity (RTO/RPO Defined)</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#9b59b6' }}>L3.9</div>
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>Platform Maturity with Centralized Module Operating Model</div>
           </div>
         </div>
       </div>

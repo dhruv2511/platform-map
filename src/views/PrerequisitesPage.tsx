@@ -45,330 +45,98 @@ export function PrerequisitesPage() {
         <ul>
           <li>Development environment: $300-500/month</li>
           <li>Staging environment: $500-800/month</li>
-          <li>Production environment: $1,000-3,000+/month (depends on usage)</li>
-          <li>Set up AWS billing alerts for your expected spend</li>
-        </ul>
-      </div>
+          import { prerequisiteCategories, prerequisiteStats, prerequisitesData } from '../data/prerequisitesData'
 
-      {/* Databricks Account */}
-      <div className="card">
-        <h3>🔐 2. Databricks Account Setup</h3>
-        <p><strong>Timeline: 1 day</strong></p>
+          export function PrerequisitesPage() {
+            const criticalOpen = prerequisitesData.filter((item) => item.priority === 'critical' && item.status !== 'complete')
 
-        <h4>Databricks Account Requirements:</h4>
-        <ul>
-          <li>
-            <strong>Databricks Account</strong>
-            <p>Sign up at <a href="https://accounts.cloud.databricks.com" target="_blank" rel="noopener noreferrer">accounts.cloud.databricks.com</a>. Choose AWS as your cloud provider.</p>
-          </li>
-          <li>
-            <strong>Account Tier</strong>
-            <p>
-              • <strong>Standard:</strong> Perfect for learning, development, single team (most cost-effective)<br/>
-              • <strong>Premium:</strong> For multiple teams, advanced security, essential for production<br/>
-              • <strong>Enterprise:</strong> For large organizations with compliance needs (HIPAA, SOC2)
-            </p>
-          </li>
-          <li>
-            <strong>Unity Catalog Enabled</strong>
-            <p>Unity Catalog is Databricks&apos; centralized governance engine. It&apos;s required in this setup. Ensure your account tier supports it (Premium/Enterprise).</p>
-          </li>
-          <li>
-            <strong>Account ID</strong>
-            <p>Find your Databricks Account ID in the Account Console (top-left corner). You&apos;ll need this for every deployment.</p>
-          </li>
-        </ul>
+            const byCategory = prerequisiteCategories.map((category) => {
+              const items = prerequisitesData.filter((item) => item.category === category)
+              const done = items.filter((item) => item.status === 'complete').length
+              const pct = items.length ? Math.round((done / items.length) * 100) : 0
+              return { category, total: items.length, done, pct }
+            })
 
-        <h4>Create OAuth Application (for CI/CD):</h4>
-        <ol>
-          <li>Log in to Databricks Account Console</li>
-          <li>Go to <strong>Admin Settings → OAuth Applications</strong></li>
-          <li>Click <strong>Create Service Principal</strong></li>
-          <li>Name it: <code>bootstrap-cicd</code></li>
-          <li>Select <strong>Account Admin</strong> permissions</li>
-          <li>Generate OAuth Secret and save it securely</li>
-        </ol>
+            return (
+              <section>
+                <h2 className="section-title">Prerequisites and Setup Readiness</h2>
+                <p>
+                  Live readiness view driven by tracked prerequisites for AWS account setup, Databricks account controls,
+                  CI/CD, networking topology, monitoring, security, and documentation.
+                </p>
 
-        <h4>Resources Created in Databricks:</h4>
-        <ul>
-          <li>Account-level service principals (dev, staging, prod)</li>
-          <li>Workspaces (one per environment)</li>
-          <li>Unity Catalog metastores (shared or per-workspace)</li>
-        </ul>
-      </div>
+                <div className="kpi-row" style={{ marginTop: 16 }}>
+                  <div className="kpi kpi-success">
+                    Completion
+                    <strong>{prerequisiteStats.completionPercentage}%</strong>
+                    <small>{prerequisiteStats.complete} of {prerequisiteStats.total} complete</small>
+                  </div>
+                  <div className="kpi kpi-warning">
+                    In Progress
+                    <strong>{prerequisiteStats.inProgress}</strong>
+                    <small>active work items</small>
+                  </div>
+                  <div className="kpi">
+                    Pending
+                    <strong>{prerequisiteStats.pending}</strong>
+                    <small>not yet started</small>
+                  </div>
+                  <div className="kpi kpi-info">
+                    Critical Open
+                    <strong>{criticalOpen.length}</strong>
+                    <small>requires owner plan</small>
+                  </div>
+                </div>
 
-      {/* GitHub/CI-CD */}
-      <div className="card">
-        <h3>🔄 3. GitHub & CI/CD Setup</h3>
-        <p><strong>Timeline: 1 day</strong></p>
+                <div className="grid" style={{ marginTop: 16 }}>
+                  <article className="card">
+                    <h3>Category Progress</h3>
+                    <ul>
+                      {byCategory.map((row) => (
+                        <li key={row.category}>
+                          <strong>{row.category}</strong>: {row.done}/{row.total} complete ({row.pct}%)
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
 
-        <h4>Git Repository:</h4>
-        <ul>
-          <li>
-            <strong>Repository Access</strong>
-            <p>You need access to GitHub repositories containing the infrastructure code (fork or clone the aws_dbx repositories)</p>
-          </li>
-          <li>
-            <strong>Branch Protection</strong>
-            <p>
-              Set up branch protection on <code>main</code> to prevent direct commits.<br/>
-              • Require pull request reviews before merge<br/>
-              • Require status checks to pass (Terraform plan)
-            </p>
-          </li>
-        </ul>
+                  <article className="card">
+                    <h3>Current Network Topology Options</h3>
+                    <ul>
+                      <li><strong>single_vpc</strong>: fastest path for isolated environments.</li>
+                      <li><strong>hub_spoke</strong>: shared services plus isolated spoke workspaces.</li>
+                      <li><strong>spoke_only</strong>: attach new workspace VPC to existing hub/TGW.</li>
+                      <li>Module split now uses dedicated <code>networking</code>, <code>network_hub</code>, and <code>network_spoke</code>.</li>
+                    </ul>
+                  </article>
+                </div>
 
-        <h4>GitHub Secrets (for automated deployments):</h4>
-        <p>Add these to your GitHub repository settings:</p>
-        <ul>
-          <li><code>AWS_ACCOUNT_ID</code>: Your AWS account ID</li>
-          <li><code>DATABRICKS_ACCOUNT_ID</code>: Your Databricks account ID</li>
-          <li><code>DATABRICKS_CLIENT_ID</code>: OAuth client ID from step 2</li>
-          <li><code>DATABRICKS_CLIENT_SECRET</code>: OAuth secret (marked as secret)</li>
-          <li><code>AWS_REGION</code>: Your target AWS region (e.g., us-east-1)</li>
-        </ul>
+                <div className="card" style={{ marginTop: 16 }}>
+                  <h3>Critical Items Not Complete</h3>
+                  {criticalOpen.length === 0 ? (
+                    <p>All critical prerequisites are marked complete.</p>
+                  ) : (
+                    <ul>
+                      {criticalOpen.map((item) => (
+                        <li key={item.id}>
+                          <strong>{item.item}</strong> ({item.category}) - owner: {item.owner}, status: {item.status}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
 
-        <h4>OIDC Configuration (Recommended):</h4>
-        <p>Instead of storing AWS credentials, use OpenID Connect (OIDC) federation:</p>
-        <ul>
-          <li>GitHub Actions can assume AWS roles without storing long-term credentials</li>
-          <li>Setup happens during the backend bootstrap stage</li>
-          <li>More secure and compliant with best practices</li>
-        </ul>
-      </div>
-
-      {/* Networking Understanding */}
-      <div className="card">
-        <h3>🌐 4. Understanding Your Network Architecture</h3>
-        <p><strong>Timeline: 1-2 days (planning only)</strong></p>
-
-        <p>Choose your networking architecture before deployment. This determines how Databricks connects to your systems.</p>
-
-        <div className="subcard">
-          <h4>Pattern 1: Standalone VPC (Default for Dev/Test)</h4>
-          <p><strong>Best for:</strong> Small teams, development, proof-of-concepts</p>
-          <p><strong>Architecture:</strong> Single VPC with Databricks workspace + managed connections to external systems</p>
-          <ul>
-            <li>✅ Simplest to deploy and understand</li>
-            <li>✅ Cost-effective ($300-500/month for dev)</li>
-            <li>✅ Good for learning and testing</li>
-            <li>❌ Not ideal for production with existing infrastructure</li>
-          </ul>
-          <p><strong>Typical Setup:</strong></p>
-          <pre className="prereq-code">VPC (10.0.0.0/16)
-├── Public Subnet (for NAT Gateway)
-└── Private Subnet (Databricks clusters)</pre>
-        </div>
-
-        <div className="subcard">
-          <h4>Pattern 2: With Network Firewall (Production)</h4>
-          <p><strong>Best for:</strong> Production environments with compliance needs</p>
-          <p><strong>Architecture:</strong> Standalone + AWS Network Firewall for traffic inspection</p>
-          <ul>
-            <li>✅ Enhanced security and traffic monitoring</li>
-            <li>✅ Meets compliance requirements (SOC2, HIPAA placeholders)</li>
-            <li>✅ Detailed logging and threat detection</li>
-            <li>❌ Slightly higher cost (~$100/month additional)</li>
-          </ul>
-          <p><strong>Typical Setup:</strong></p>
-          <pre className="prereq-code">VPC (10.0.0.0/16)
-├── NAT Gateway (egress)
-├── Network Firewall (inspection point)
-└── Databricks Subnets</pre>
-        </div>
-
-        <div className="subcard subcard-focus">
-          <h4>Pattern 3: Hub-Spoke Architecture (Enterprise/Multi-Environment)</h4>
-          <p><strong>Best for:</strong> Organizations with multiple workspaces, shared services, or complex networks</p>
-          <p><strong>Why Hub-Spoke?</strong></p>
-          <ul>
-            <li>
-              <strong>Centralized Management:</strong> One hub VPC for shared services (databases, data lakes, monitoring)
-            </li>
-            <li>
-              <strong>Environment Isolation:</strong> Each environment (dev/staging/prod) gets its own spoke VPC
-            </li>
-            <li>
-              <strong>Cost Efficiency:</strong> Shared infrastructure reduces redundancy
-            </li>
-            <li>
-              <strong>Security:</strong> Network segmentation and controlled inter-VPC communication
-            </li>
-          </ul>
-
-          <h5>🔑 Key Concepts for Hub-Spoke:</h5>
-          <ul>
-            <li><strong>Hub VPC:</strong> Shared services, data warehouses, authentication services, monitoring</li>
-            <li><strong>Spoke VPCs:</strong> Individual Databricks workspaces (dev, staging, prod)</li>
-            <li><strong>Transit Gateway:</strong> Connects hub to all spokes automatically</li>
-            <li><strong>Private Link:</strong> Secure connectivity between Databricks and AWS services</li>
-          </ul>
-
-          <h5>Architecture Diagram:</h5>
-          <pre className="prereq-code">
-{`Hub VPC (10.0.0.0/16) - Shared Services
-├── Shared Databases
-├── Central Data Lake  
-├── Monitoring & Logging
-└── Network Firewall (optional central)
-       ↓
-Transit Gateway (TGW) - Central Routing
-       ↓
-   ┌───┴───────┬───────────┐
-   ↓           ↓           ↓
-Dev Spoke    Staging      Prod Spoke
-(10.1.0/16)  Spoke       (10.3.0/16)
-             (10.2.0/16)
-    ↓         ↓            ↓
-  DBX Dev   DBX Stg      DBX Prod
-  Cluster   Cluster      Cluster`}
-          </pre>
-
-          <h5>Hub-Spoke Benefits:</h5>
-          <table style={{ width: '100%', marginTop: 12, borderCollapse: 'collapse' }}>
-            <thead>
-              <tr>
-                <th style={{ border: '1px solid #ddd', padding: 8, textAlign: 'left' }}>Feature</th>
-                <th style={{ border: '1px solid #ddd', padding: 8, textAlign: 'left' }}>Benefit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Centralized Monitoring</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>All logs flow to hub, single pane of glass</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Shared Data Lake</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>All workspaces access same data sources</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Security Groups</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Centralized firewall rules, consistent policies</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Cost Optimization</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Shared infrastructure, less redundancy</td>
-              </tr>
-              <tr>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Environment Flow</td>
-                <td style={{ border: '1px solid #ddd', padding: 8 }}>Data moves from dev→staging→prod safely</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h5>When to Use Hub-Spoke?</h5>
-          <ul>
-            <li>✅ Multiple Databricks workspaces (dev, staging, prod)</li>
-            <li>✅ Shared data lake or data warehouse</li>
-            <li>✅ Centralized monitoring/logging requirements</li>
-            <li>✅ Complex security policies across environments</li>
-            <li>✅ Enterprise architecture with existing infrastructure</li>
-            <li>❌ Not needed: Simple single environment, small team</li>
-          </ul>
-
-          <h5>Implementation Steps (Simplified):</h5>
-          <ol>
-            <li>Create Hub VPC (10.0.0.0/16) with shared services</li>
-            <li>Create Transit Gateway</li>
-            <li>Attach hub VPC to Transit Gateway</li>
-            <li>Create Dev Spoke VPC (10.1.0.0/16) + Databricks workspace</li>
-            <li>Attach Dev Spoke to Transit Gateway</li>
-            <li>Repeat for Staging & Prod spokes</li>
-            <li>Configure Transit Gateway route tables for inter-VPC communication</li>
-          </ol>
-        </div>
-
-        <div className="subcard">
-          <h4>Pattern 4: Spoke-Only (Existing Hub)</h4>
-          <p><strong>Best for:</strong> Adding Databricks to existing hub-spoke network</p>
-          <ul>
-            <li>✅ Uses existing Transit Gateway</li>
-            <li>✅ Connects to existing hub services</li>
-            <li>❌ Requires existing hub infrastructure</li>
-          </ul>
-        </div>
-
-        <h4>Decision Matrix:</h4>
-        <table style={{ width: '100%', marginTop: 16, borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f0f0f0' }}>
-              <th style={{ border: '1px solid #ddd', padding: 12, textAlign: 'left' }}>Architecture</th>
-              <th style={{ border: '1px solid #ddd', padding: 12, textAlign: 'left' }}>Complexity</th>
-              <th style={{ border: '1px solid #ddd', padding: 12, textAlign: 'left' }}>Monthly Cost</th>
-              <th style={{ border: '1px solid #ddd', padding: 12, textAlign: 'left' }}>Best For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>Standalone</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>Low</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>$300-500</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>Dev/Test</td>
-            </tr>
-            <tr>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>With Firewall</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>Medium</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>$400-600</td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}>Production</td>
-            </tr>
-            <tr style={{ backgroundColor: '#f0f7ff' }}>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}><strong>Hub-Spoke</strong></td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}><strong>High</strong></td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}><strong>$1,200-2,000+</strong></td>
-              <td style={{ border: '1px solid #ddd', padding: 12 }}><strong>Enterprise (Multiple Envs)</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Technical Tools */}
-      <div className="card">
-        <h3>🛠️ 5. Developer Tools & Environment</h3>
-        <p><strong>Timeline: Half day to install and configure</strong></p>
-
-        <h4>Required Tools:</h4>
-        <ul>
-          <li>
-            <strong>Terraform v1.13.3 or later</strong>
-            <p>
-              Infrastructure-as-Code tool used for AWS and Databricks deployment.<br/>
-              <a href="https://www.terraform.io/downloads" target="_blank" rel="noopener noreferrer">Download Terraform</a> | 
-              <a href="https://learn.hashicorp.com/tutorials/terraform/install-cli" target="_blank" rel="noopener noreferrer"> Installation Guide</a>
-            </p>
-          </li>
-          <li>
-            <strong>AWS CLI v2+</strong>
-            <p>
-              Command-line tool to interact with AWS services.<br/>
-              <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html" target="_blank" rel="noopener noreferrer">Installation Guide</a><br/>
-              <code>aws configure</code> - Setup your AWS credentials
-            </p>
-          </li>
-          <li>
-            <strong>Git (Version Control)</strong>
-            <p>
-              For managing infrastructure code and CI/CD workflows.<br/>
-              <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" target="_blank" rel="noopener noreferrer">Installation Guide</a>
-            </p>
-          </li>
-          <li>
-            <strong>Databricks CLI (Optional but Recommended)</strong>
-            <p>
-              Interact with Databricks from command line.<br/>
-              <code>pip install databricks-cli</code>
-            </p>
-          </li>
-        </ul>
-
-        <h4>Verification Checklist:</h4>
-        <pre className="prereq-code">
-{`# Verify installations:
-terraform --version          # Should be 1.13.3+
-aws --version               # Should be 2.0+
-git --version              # Should be 2.30+
-
-# Verify AWS credentials configured
-aws sts get-caller-identity  # Should return your user/role
+                <div className="card" style={{ marginTop: 16 }}>
+                  <h3>Release Governance Prerequisites</h3>
+                  <ul>
+                    <li>Central module registry release workflow is active in <code>terraform-modules-central</code>.</li>
+                    <li>Version pinning policy for consuming repositories is tracked as in-progress and should be enforced in CI checks.</li>
+                    <li>Environment protection and approval rules remain required for destroy workflows.</li>
+                  </ul>
+                </div>
+              </section>
+            )
+          }
 
 # Verify AWS permissions
 aws s3 ls                   # Can list buckets

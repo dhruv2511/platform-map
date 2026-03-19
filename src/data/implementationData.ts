@@ -509,6 +509,23 @@ export const implementationTasks: ImplementationTask[] = [
     impact: 'Enables access to newer provider capabilities while controlling upgrade blast radius.',
     relatedGap: 'Provider Version Currency'
   },
+  {
+    id: 'ARCH-018',
+    category: 'Infrastructure',
+    title: 'Central Module Registry Completion + Split Hub/Spoke Networking',
+    description: 'Completed migration to terraform-modules-central and delivered dedicated networking, network_hub, and network_spoke module patterns across provisioning and workspace configuration flows.',
+    priority: 'Critical',
+    status: 'Completed',
+    completedDate: '2026-03-18',
+    filesModified: [
+      'aws_dbx/terraform-modules-central/',
+      'aws_dbx/aws_databricks_provisioning/databricks_deployment/main.tf',
+      'aws_dbx/databricks-workspace-configuration-aws/workspace_configuration/main.tf',
+      'docs/AWS_DBX_ARCHITECTURE_REVIEW_MAR_2026.md'
+    ],
+    impact: 'Established a single module operating model with reusable versioned components and clear network topology separation for single_vpc, hub_spoke, and spoke_only deployments.',
+    relatedGap: 'Module Centralization & Topology Split'
+  },
 
   // Data Platform Architect Tasks (Q2-Q4 2026)
   {
@@ -750,9 +767,9 @@ export const identifiedGaps: IdentifiedGap[] = [
     currentState: 'Audit log delivery currently relies on broad drift guard behavior to avoid duplicate config failures',
     targetState: 'Import-first onboarding with narrow ignore scope and full drift visibility',
     priority: 'High',
-    status: 'Mitigated',
+    status: 'Addressed',
     relatedTasks: ['ARCH-003'],
-    impact: 'Critical audit telemetry settings may drift without strong detection'
+    impact: 'Drift detection restored by removing broad lifecycle ignores and adopting import-first stabilization'
   },
   {
     id: 'GAP-014',
@@ -761,9 +778,9 @@ export const identifiedGaps: IdentifiedGap[] = [
     currentState: 'Backups/versioning exist, but formal RTO/RPO and executable recovery drills are not codified',
     targetState: 'Tiered RTO/RPO targets with scheduled restore testing and owned runbooks',
     priority: 'Critical',
-    status: 'Open',
+    status: 'Addressed',
     relatedTasks: ['ARCH-004'],
-    impact: 'Recovery timelines are unpredictable under regional or account-level incidents'
+    impact: 'Recovery timelines now measurable with documented RTO/RPO targets and scheduled drill cadence'
   },
   {
     id: 'GAP-015',
@@ -852,6 +869,17 @@ export const identifiedGaps: IdentifiedGap[] = [
     status: 'Open',
     relatedTasks: ['ARCH-014', 'ARCH-015', 'ARCH-016', 'ARCH-017'],
     impact: 'Consistency, performance governance, and provider-evolution readiness remain dependent on next-wave delivery'
+  },
+  {
+    id: 'GAP-031',
+    category: 'Operations',
+    title: 'Module Centralization & Topology Split',
+    currentState: 'Provisioning and workspace modules were historically distributed with mixed networking abstraction boundaries',
+    targetState: 'Centralized module registry with dedicated networking, hub, and spoke modules and release governance',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-018'],
+    impact: 'Improves module reuse, reduces drift, and clarifies network topology ownership across delivery teams'
   },
 
   // Data Platform Governance Gaps (Q2-Q4 2026)

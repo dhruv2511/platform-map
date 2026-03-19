@@ -31,6 +31,8 @@ export function HomePage() {
           <li>Infrastructure and workspace config are deployed through CI/CD pipelines.</li>
           <li>GitHub OIDC authentication is used for AWS role assumption.</li>
           <li>Terraform state is managed in encrypted S3 with DynamoDB locking.</li>
+          <li>Shared module delivery now runs through terraform-modules-central with versioned module releases.</li>
+          <li>Networking topology is explicitly split across networking, network_hub, and network_spoke modules.</li>
           <li>Framework pages map deployed capabilities to AWS and Databricks standards.</li>
         </ul>
       </div>

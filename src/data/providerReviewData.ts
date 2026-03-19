@@ -91,6 +91,21 @@ export const reviewContributions: ReviewContribution[] = [
       'workspace_configuration/remote_state.tf',
     ],
   },
+  {
+    id: 'REV-C-006',
+    title: 'Centralized module registry completion with split networking topology modules',
+    scope: 'Cross-Part',
+    status: 'Completed',
+    awsPillars: ['Operational Excellence', 'Reliability', 'Security'],
+    databricksPillars: ['Operational Excellence', 'Governance & Monitoring'],
+    contribution:
+      'Completes shared module operating model and enforces reusable topology-aware deployment patterns for single_vpc, hub_spoke, and spoke_only.',
+    evidence: [
+      'terraform-modules-central/README.md',
+      'aws_databricks_provisioning/databricks_deployment/main.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf',
+    ],
+  },
 ]
 
 export const reviewWaves: ReviewWave[] = [
@@ -102,6 +117,7 @@ export const reviewWaves: ReviewWave[] = [
       'Add reusable UC grant templates and environment mappings',
       'Implement workspace hardening controls (IP access lists + secrets family + settings baseline)',
       'Activate auth_profile strategy in provider configuration across Part A / Part B / Part C',
+      'Complete centralized module registry and split networking modules (networking / network_hub / network_spoke)',
     ],
   },
   {
@@ -124,7 +140,7 @@ export const reviewWaves: ReviewWave[] = [
 
 export const awsPillarContributionSummary = [
   'Security: workspace hardening controls, OIDC-first provider auth behavior, and dedicated UC external data IAM role.',
-  'Operational Excellence: reusable grant templates and provider-auth profile consistency across all parts.',
+  'Operational Excellence: reusable grant templates, centralized module registry, and provider-auth profile consistency across all parts.',
   'Reliability: clearer UC storage role separation and less manual drift in governance/data-access provisioning.',
 ]
 
@@ -132,5 +148,5 @@ export const databricksPillarContributionSummary = [
   'Security & Compliance: codified UC privilege model + workspace secret governance + profile-aware auth execution.',
   'Governance & Monitoring: baseline UC data-access objects and templated grants for repeatable domain onboarding.',
   'Data Management: external location/volume/storage credential IaC pattern anchored to foundation outputs.',
-  'Operational Excellence: deterministic Wave-based backlog execution and implemented Part A → Part B dependency flow.',
+  'Operational Excellence: deterministic Wave-based backlog execution, centralized module model, and implemented Part A → Part B dependency flow.',
 ]

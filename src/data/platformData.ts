@@ -387,10 +387,15 @@ export const milestones: Milestone[] = [
   },
   {
     number: 2,
-    title: 'Unified Networking Module',
+    title: 'Split Networking Modules',
     status: '✅ Complete',
-    description: 'Flexible networking for standalone/firewall/hub-spoke/spoke-only.',
-    features: ['Configurable VPC and subnets', 'NAT + IGW', 'VPC endpoints and security groups'],
+    description: 'Dedicated networking modules for single-vpc, hub-spoke, and spoke-only topologies.',
+    features: [
+      'networking module for single_vpc topology',
+      'network_hub module for shared-services hub and TGW controls',
+      'network_spoke module for workspace VPC attachment patterns',
+      'VPC endpoints, security groups, and flow logs across topologies',
+    ],
   },
   {
     number: 3,
@@ -539,7 +544,7 @@ export const componentDetails: ComponentDetail[] = [
     name: 'Networking Module',
     layer: 'Layer 1: Provisioning',
     status: '✅ Production',
-    purpose: 'Flexible VPC networking for standalone/firewall/hub-spoke/spoke-only patterns',
+    purpose: 'Single-VPC networking module for standalone deployments with Databricks-ready guardrails',
     keyFeatures: [
       'Multi-AZ VPC with configurable CIDR blocks',
       'NAT gateways for secure outbound traffic',
@@ -549,6 +554,34 @@ export const componentDetails: ComponentDetail[] = [
     ],
     dependencies: ['AWS EC2 VPC'],
     security: ['Network isolation', 'Flow log monitoring', 'Security group NACL rules'],
+  },
+  {
+    name: 'Network Hub Module',
+    layer: 'Layer 1: Provisioning',
+    status: '✅ Production',
+    purpose: 'Hub VPC foundation for hub-spoke topology with centralized routing and shared controls',
+    keyFeatures: [
+      'Hub VPC for shared services and centralized egress',
+      'Transit Gateway lifecycle and route attachment controls',
+      'Optional centralized firewall placement pattern',
+      'Cross-account compatibility hooks for enterprise deployments',
+    ],
+    dependencies: ['AWS EC2 VPC', 'AWS Transit Gateway'],
+    security: ['Centralized network segmentation', 'Shared-services isolation', 'Flow log monitoring'],
+  },
+  {
+    name: 'Network Spoke Module',
+    layer: 'Layer 1: Provisioning',
+    status: '✅ Production',
+    purpose: 'Spoke VPC module for hub-spoke and spoke-only workspace deployments',
+    keyFeatures: [
+      'Spoke VPC provisioning with Databricks subnet layout',
+      'Transit Gateway attachment and route table integration',
+      'Security group baseline for workspace traffic policies',
+      'Flow log output support for shared observability pipelines',
+    ],
+    dependencies: ['AWS EC2 VPC', 'AWS Transit Gateway'],
+    security: ['Environment isolation', 'Least-privilege network paths', 'Flow log monitoring'],
   },
   {
     name: 'Storage Module',
@@ -833,7 +866,7 @@ export const componentDetails: ComponentDetail[] = [
 export const architectureAssessment = {
   overallMaturity: 'L3.9 (Production-Ready with Centralized Module Operating Model)',
   implementationStatus: 100,
-  lastUpdated: '2026-03-18',
+  lastUpdated: '2026-03-19',
   nextMilestonesLabel: [
     '✅ Wave 1 (P0) complete: UC data access baseline, grants templates, workspace hardening, provider-auth profile activation',
     '🎯 Wave 2 (P1): runtime standardization (instance pools/global init scripts) and optional data engineering starter baseline',
@@ -851,7 +884,7 @@ export const architectureAssessment = {
     'Sustainability pillar: Spot optimization, auto-termination, lifecycle policies (86%)',
   ],
   gaps: [
-    '✅ RESOLVED: All 15 Terraform modules production-ready (100% implementation complete)',
+    '✅ RESOLVED: Centralized 20-module registry production-ready (100% implementation complete)',
     '✅ RESOLVED: Workspace monitoring complete with system tables analytics',
     '✅ RESOLVED: Spot instance optimization fully implemented across cluster policies',
     '✅ RESOLVED: Budget enforcement and anomaly alerts automated via CloudWatch',

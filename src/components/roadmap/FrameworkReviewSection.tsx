@@ -51,7 +51,7 @@ export function FrameworkReviewSection() {
 
       <div className="feature-grid grid-secondary">
         <article className="roadmap-mini-card success card-density-secondary">
-          <h4><span className="icon-status success">✅</span>Architecture Strengths (8)</h4>
+          <h4><span className="icon-status success">✅</span>Architecture Strengths (9)</h4>
           <ul>
             <li>✓ Enterprise security: 94% AWS, 92% Databricks</li>
             <li>✓ Complete 4-layer architecture with centralized module registry (20 modules)</li>
