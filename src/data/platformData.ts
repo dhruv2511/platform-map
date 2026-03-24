@@ -375,6 +375,37 @@ export const keyGaps: KeyGap[] = [
     impact: 'Improves reuse, consistency, and release governance across provisioning and workspace configuration repos.',
     remediation: 'Keep all consuming repositories version-pinned to tagged module releases with release-note validation.',
   },
+  // ── Provider gap entries (latest Databricks provider vs current ~> 1.91 pin) ──
+  {
+    id: 'gap-provider-version-currency',
+    framework: 'Databricks',
+    pillar: 'Operational Excellence',
+    severity: 'High',
+    title: 'Provider pinned at ~> 1.91 — staged upgrade to latest required',
+    currentState: 'All stacks (Part A / B / C) pin the Databricks Terraform provider at ~> 1.91. Latest version adds Enhanced Security Monitoring, Automatic Cluster Update, Compliance Security Profile, Databricks Apps, Budget Policy, and Catalog Workspace Binding resources.',
+    impact: '13 newer provider resources are unavailable without an upgrade. Security patches and deprecation warnings accumulate on the old pin. Upgrade path: Part C → Part A → Part B with compatibility testing.',
+    remediation: 'Wave 3 (P2): bump pin in versions.tf for Part C first; validate compatibility for MWS, grants, and settings resources; then promote to Part A and Part B.',
+  },
+  {
+    id: 'gap-enhanced-security-monitoring',
+    framework: 'Databricks',
+    pillar: 'Security & Compliance',
+    severity: 'High',
+    title: 'Enhanced Security Monitoring and Automatic Cluster Update not IaC-managed',
+    currentState: 'The provider resources databricks_enhanced_security_monitoring, databricks_automatic_cluster_update, and databricks_compliance_security_profile are not yet included in the workspace_hardening module. These require provider ≥ 1.57.',
+    impact: 'ESM-level audit events and threat-detection signals are absent. Cluster runtimes drift from the patched DBR line between manual updates. Compliance profiles (FedRAMP/HIPAA) are set manually outside Terraform state.',
+    remediation: 'Wave 2 (P1): extend workspace_hardening module to include ESM, automatic cluster update, and compliance profile resources behind feature-flag variables.',
+  },
+  {
+    id: 'gap-databricks-apps-serverless',
+    framework: 'Databricks',
+    pillar: 'Operational Excellence',
+    severity: 'Medium',
+    title: 'Databricks Apps and serverless NCC not provisioned',
+    currentState: 'No platform module or baseline exists for databricks_app (serverless app compute, ≥ 1.65) or databricks_network_connectivity_config (private connectivity for serverless, ≥ 1.48). Teams provision ad-hoc without governance.',
+    impact: 'Serverless workloads and Apps bypass platform tagging, cost allocation, and PrivateLink isolation baselines.',
+    remediation: 'Wave 3 (P2): design an apps_baseline module covering app provisioning, NCC private endpoints, and access control after provider upgrade is complete.',
+  },
 ]
 
 export const milestones: Milestone[] = [
