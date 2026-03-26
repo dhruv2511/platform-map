@@ -106,6 +106,79 @@ export const reviewContributions: ReviewContribution[] = [
       'databricks-workspace-configuration-aws/workspace_configuration/main.tf',
     ],
   },
+  {
+    id: 'REV-C-007',
+    title: 'Security baseline module: Enhanced Security Monitoring + Compliance Security Profile',
+    scope: 'Part B',
+    status: 'Completed',
+    awsPillars: ['Security', 'Operational Excellence'],
+    databricksPillars: ['Security & Compliance', 'Governance & Monitoring'],
+    contribution:
+      'Codifies workspace-level ESM for SIEM integration and threat detection, and Compliance Security Profile (HIPAA + FEDRAMP_MODERATE) in IaC. Resolves PGP-001 and PGP-003.',
+    evidence: [
+      'terraform-modules-central/security/main.tf',
+      'terraform-modules-central/security/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf',
+    ],
+  },
+  {
+    id: 'REV-C-008',
+    title: 'Cluster policies governance framework with compute runtime standardization',
+    scope: 'Part B',
+    status: 'Completed',
+    awsPillars: ['Performance Efficiency', 'Cost Optimization', 'Security'],
+    databricksPillars: ['Reliability & Performance', 'Cost Optimization', 'Security & Compliance'],
+    contribution:
+      'Delivers 5-tier cluster policy framework (default/dev/prod/cost_control/security) with instance pool support, global init scripts, automatic cluster update, and per-policy budget caps. Resolves PGP-002, PGP-006, PGP-007.',
+    evidence: [
+      'terraform-modules-central/cluster_policies/main.tf',
+      'terraform-modules-central/cluster_policies/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf',
+    ],
+  },
+  {
+    id: 'REV-C-009',
+    title: 'Workspace Apps baseline module for serverless app governance',
+    scope: 'Part B',
+    status: 'Completed',
+    awsPillars: ['Operational Excellence'],
+    databricksPillars: ['Operational Excellence', 'Security & Compliance'],
+    contribution:
+      'Provisions Databricks Apps via IaC with permissions baseline, platform governance, and cost allocation tagging. Resolves PGP-004.',
+    evidence: [
+      'terraform-modules-central/workspace_apps/main.tf',
+      'terraform-modules-central/workspace_apps/variables.tf',
+    ],
+  },
+  {
+    id: 'REV-C-010',
+    title: 'Provider configuration DRY refactoring and module migration',
+    scope: 'Cross-Part',
+    status: 'Completed',
+    awsPillars: ['Operational Excellence', 'Reliability'],
+    databricksPillars: ['Operational Excellence'],
+    contribution:
+      'Consolidated provider blocks from child modules to terraform.tf across 22 modules. Migrated provisioning repos to terraform-modules-central with versioned references (v0.1.0). Reduces boilerplate and aligns all stacks to consistent provider configuration.',
+    evidence: [
+      'terraform-modules-central/*/providers.tf',
+      'aws_databricks_provisioning/databricks_deployment/main.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf',
+    ],
+  },
+  {
+    id: 'REV-C-011',
+    title: 'Enhanced workspace monitoring with Lakeview dashboards and quality monitors',
+    scope: 'Part B',
+    status: 'Completed',
+    awsPillars: ['Operational Excellence', 'Reliability'],
+    databricksPillars: ['Governance & Monitoring', 'Reliability & Performance'],
+    contribution:
+      'Extends workspace monitoring with Lakeview dashboards (5 embedded datasets), Lakehouse quality monitors (time_series/snapshot/inference_log), failure rate alerts, and dynamic SQL warehouse management. Resolves PGP-011.',
+    evidence: [
+      'terraform-modules-central/workspace_monitoring/main.tf',
+      'terraform-modules-central/workspace_monitoring/variables.tf',
+    ],
+  },
 ]
 
 export const reviewWaves: ReviewWave[] = [
@@ -122,10 +195,16 @@ export const reviewWaves: ReviewWave[] = [
   },
   {
     wave: 'Wave 2 (P1)',
-    status: 'Planned',
+    status: 'Completed',
     tasks: [
-      'Add compute runtime baseline (instance pools, global init scripts, curated platform clusters)',
+      '✅ Security baseline module: ESM + Compliance Security Profile (HIPAA/FEDRAMP) codified in IaC',
+      '✅ Cluster policies governance: 5-tier framework with instance pools, global init scripts, auto cluster update',
+      '✅ Workspace Apps baseline: serverless app deployment with permissions and governance',
+      '✅ Enhanced workspace monitoring: Lakeview dashboards, quality monitors, failure rate alerts',
+      '✅ Provider config DRY refactoring: consolidated provider blocks across 22 modules',
       'Add optional data engineering starter baseline (pipeline and repo/notebook assets where platform-owned)',
+      'Implement Budget Policies (databricks_budget_policy) for principal-level spend controls',
+      'Implement Catalog Workspace Bindings for multi-workspace isolation',
     ],
   },
   {
@@ -133,22 +212,26 @@ export const reviewWaves: ReviewWave[] = [
     status: 'Planned',
     tasks: [
       'Standardize SQL resource model choices and naming conventions',
+      'Implement Network Connectivity Config (NCC) for serverless private egress',
       'Upgrade Databricks provider in controlled phases (Part C → Part A → Part B) with compatibility testing',
     ],
   },
 ]
 
 export const awsPillarContributionSummary = [
-  'Security: workspace hardening controls, OIDC-first provider auth behavior, and dedicated UC external data IAM role.',
-  'Operational Excellence: reusable grant templates, centralized module registry, and provider-auth profile consistency across all parts.',
-  'Reliability: clearer UC storage role separation and less manual drift in governance/data-access provisioning.',
+  'Security: workspace hardening controls, ESM + Compliance Security Profile (HIPAA/FEDRAMP), OIDC-first provider auth, dedicated UC external data IAM role, and IAM policy hardening.',
+  'Operational Excellence: reusable grant templates, centralized 22-module registry (v0.1.0), DRY provider config, workspace apps governance, and provider-auth profile consistency across all parts.',
+  'Reliability: clearer UC storage role separation, quality monitors for data SLO tracking, auto cluster update for patch currency, and less manual drift in governance/data-access provisioning.',
+  'Performance Efficiency: instance pools for reduced cold-start latency, global init scripts for consistent bootstrap, Lakeview dashboards for real-time analytics, and 5-tier cluster policy budget enforcement.',
+  'Cost Optimization: cost-tier cluster policies ($300-$5000), spot optimization, budget enforcement, and anomaly detection with real-time CloudWatch monitoring.',
 ]
 
 export const databricksPillarContributionSummary = [
-  'Security & Compliance: codified UC privilege model + workspace secret governance + profile-aware auth execution.',
-  'Governance & Monitoring: baseline UC data-access objects and templated grants for repeatable domain onboarding.',
-  'Data Management: external location/volume/storage credential IaC pattern anchored to foundation outputs.',
-  'Operational Excellence: deterministic Wave-based backlog execution, centralized module model, and implemented Part A → Part B dependency flow.',
+  'Security & Compliance: ESM + Compliance Security Profile codified, UC privilege model, workspace secret governance, security-tier cluster policy with encryption/audit, and profile-aware auth execution.',
+  'Governance & Monitoring: Lakeview dashboards with 5 embedded datasets, Lakehouse quality monitors (time_series/snapshot/inference_log), failure rate alerts, baseline UC data-access objects, and templated grants for repeatable domain onboarding.',
+  'Data Management: external location/volume/storage credential IaC pattern anchored to foundation outputs, quality monitor data SLO tracking.',
+  'Operational Excellence: deterministic Wave-based backlog execution, 22-module centralized model, DRY provider config, workspace apps baseline, and implemented Part A → Part B dependency flow.',
+  'Reliability & Performance: instance pools for spot stability, auto cluster update for runtime currency, global init scripts for consistent bootstrap, and compute runtime standardization across 5 policy tiers.',
 ]
 
 // ============================================================================
@@ -173,6 +256,7 @@ export type ProviderGap = {
   impact: string
   wave: 'Wave 2 (P1)' | 'Wave 3 (P2)' | 'Backlog'
   providerVersionIntroduced: string
+  status?: 'Open' | 'Resolved' | 'Partially Resolved'
 }
 
 /**
@@ -190,39 +274,42 @@ export const providerGaps: ProviderGap[] = [
     category: 'Security & Compliance',
     severity: 'High',
     resource: 'databricks_enhanced_security_monitoring',
-    title: 'Enhanced Security Monitoring not enabled',
+    title: '✅ RESOLVED: Enhanced Security Monitoring now enabled via security module',
     description:
-      'Provider resource for workspace-level enhanced security monitoring (ESM) enables continuous integration with SIEM tooling, extra audit events, and malicious-activity detection. Not yet codified in workspace_hardening module.',
+      'Workspace-level ESM is now codified in the dedicated security module (terraform-modules-central/security). Enables continuous SIEM integration, extra audit events, and malicious-activity detection.',
     impact:
-      'ESM-level audit events and threat-detection signals are absent; compliance evidence for security-sensitive workloads is weaker.',
+      'ESM-level audit events and threat-detection signals are now active. Compliance evidence for security-sensitive workloads is strengthened.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.57',
+    status: 'Resolved',
   },
   {
     id: 'PGP-002',
     category: 'Security & Compliance',
     severity: 'High',
     resource: 'databricks_automatic_cluster_update',
-    title: 'Automatic cluster runtime update not configured',
+    title: '✅ RESOLVED: Automatic cluster runtime update configured in cluster_policies module',
     description:
-      'Provider resource enables workspace-wide automated patching of cluster runtimes. Without it, DBR version currency relies on manual cluster policy updates and job reconfiguration after each DBR release.',
+      'Automatic cluster update workspace settings are now codified in the cluster_policies module (terraform-modules-central/cluster_policies). Enables workspace-wide automated patching of cluster runtimes.',
     impact:
-      'Cluster runtimes can drift from the patched DBR line between manual maintenance windows, increasing CVE exposure.',
+      'Cluster runtimes are automatically kept current with the patched DBR line, reducing CVE exposure window.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.57',
+    status: 'Resolved',
   },
   {
     id: 'PGP-003',
     category: 'Security & Compliance',
     severity: 'Medium',
     resource: 'databricks_compliance_security_profile',
-    title: 'Compliance Security Profile (FedRAMP/HIPAA) not IaC-managed',
+    title: '✅ RESOLVED: Compliance Security Profile now IaC-managed via security module',
     description:
-      'Provider resource controls the workspace compliance security profile (FedRAMP High, HIPAA, etc.). Currently not included in the workspace_hardening module; profile must be set manually via the account console.',
+      'Compliance Security Profile (HIPAA + FEDRAMP_MODERATE) is now codified in the dedicated security module (terraform-modules-central/security). Profile settings are in Terraform state and drift-detectable.',
     impact:
-      'Compliance profile-level controls are outside Terraform state, creating audit drift and blocking regulated-workload onboarding.',
+      'Compliance profile-level controls are now within Terraform state. Regulated-workload onboarding is unblocked with codified standards.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.57',
+    status: 'Resolved',
   },
   // ── Compute & Serverless ─────────────────────────────────────────────────
   {
@@ -230,13 +317,14 @@ export const providerGaps: ProviderGap[] = [
     category: 'Compute & Serverless',
     severity: 'High',
     resource: 'databricks_app',
-    title: 'Databricks Apps serverless runtime not provisioned',
+    title: '✅ RESOLVED: Databricks Apps baseline deployed via workspace_apps module',
     description:
-      'Databricks Apps is a new serverless compute tier for deploying web applications and dashboards. GA in 2025; not yet modelled in any platform module. No deployment pattern, IAM, or network baseline exists.',
+      'Databricks Apps provisioning is now codified in the workspace_apps module (terraform-modules-central/workspace_apps). Includes permissions baseline, platform governance, and cost allocation tagging.',
     impact:
-      'Teams wanting to deploy Databricks Apps must provision them manually, outside IaC governance and without platform guardrails.',
+      'Teams can deploy Databricks Apps through IaC with platform guardrails, tagging, and access controls.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: '≥ 1.65',
+    status: 'Resolved',
   },
   {
     id: 'PGP-005',
@@ -250,32 +338,35 @@ export const providerGaps: ProviderGap[] = [
       'Serverless workloads currently egress over public routes, bypassing the PrivateLink isolation established for classic cluster traffic.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: '≥ 1.48',
+    status: 'Open',
   },
   {
     id: 'PGP-006',
     category: 'Compute & Serverless',
     severity: 'Medium',
     resource: 'databricks_instance_pool',
-    title: 'Instance pools not IaC-managed (Wave 2 backlog)',
+    title: '✅ RESOLVED: Instance pools now IaC-managed via cluster_policies module',
     description:
-      'Already identified in Wave 2 (P1). Instance pools reduce cluster start-up latency and improve spot-instance stability. The resource is available in the current provider pin but not yet implemented in any module.',
+      'Instance pool support is now integrated into the cluster_policies module (terraform-modules-central/cluster_policies) with auto-termination and spot optimization. Pools reduce cluster start-up latency and improve spot-instance stability.',
     impact:
-      'Cluster cold-start times are higher than necessary; spot-interruption recovery is slower without a pool buffer.',
+      'Cluster cold-start times reduced; spot-interruption recovery improved with pool buffer.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.0',
+    status: 'Resolved',
   },
   {
     id: 'PGP-007',
     category: 'Compute & Serverless',
     severity: 'Medium',
     resource: 'databricks_global_init_script',
-    title: 'Global init scripts not IaC-managed (Wave 2 backlog)',
+    title: '✅ RESOLVED: Global init scripts now IaC-managed via cluster_policies module',
     description:
-      'Already identified in Wave 2 (P1). Global init scripts allow consistent bootstrap behavior (environment variables, agent installs, compliance tooling) across all clusters. Not yet implemented.',
+      'Global init scripts integration is now codified in the cluster_policies module (terraform-modules-central/cluster_policies). Enables consistent bootstrap behavior (environment variables, agent installs, compliance tooling) across all clusters.',
     impact:
-      'Runtime environment consistency depends on per-cluster init scripts rather than a centrally governed global baseline.',
+      'Runtime environment consistency enforced via centrally governed global init scripts baseline.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.0',
+    status: 'Resolved',
   },
   // ── AI / ML Platform ─────────────────────────────────────────────────────
   {
@@ -290,6 +381,7 @@ export const providerGaps: ProviderGap[] = [
       'Data science teams provision serving endpoints ad-hoc; no governance, tagging, or access-control baseline is enforced.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: '≥ 1.40',
+    status: 'Open',
   },
   {
     id: 'PGP-009',
@@ -303,6 +395,7 @@ export const providerGaps: ProviderGap[] = [
       'ML model registration, aliasing, and promotion remain manual; no Terraform-verified ownership or access-control baseline.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: '≥ 1.48',
+    status: 'Open',
   },
   {
     id: 'PGP-010',
@@ -316,6 +409,7 @@ export const providerGaps: ProviderGap[] = [
       'Vector Search infrastructure is provisioned manually without platform tagging, cost-allocation, or network isolation controls.',
     wave: 'Backlog',
     providerVersionIntroduced: '≥ 1.55',
+    status: 'Open',
   },
   // ── Governance & Monitoring ──────────────────────────────────────────────
   {
@@ -323,13 +417,14 @@ export const providerGaps: ProviderGap[] = [
     category: 'Governance & Monitoring',
     severity: 'Medium',
     resource: 'databricks_quality_monitor',
-    title: 'Lakehouse Monitoring quality monitors not IaC-managed',
+    title: '✅ RESOLVED: Quality monitors now IaC-managed via workspace_monitoring module',
     description:
-      'Provider resource for Lakehouse Monitoring quality monitors enables automated data-quality SLA tracking directly in Unity Catalog. No platform baseline exists; monitors are created manually by data teams.',
+      'Lakehouse quality monitors (time_series, snapshot, inference_log) are now codified in the workspace_monitoring module (terraform-modules-central/workspace_monitoring). Includes failure rate alerts and standardized monitor templates.',
     impact:
-      'Data quality SLOs are untracked at the platform layer; no standardized monitor template, threshold policy, or notification wiring.',
+      'Data quality SLOs are now tracked at the platform layer with standardized monitor templates, threshold policies, and email notification wiring.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: '≥ 1.50',
+    status: 'Resolved',
   },
   {
     id: 'PGP-012',
@@ -343,6 +438,7 @@ export const providerGaps: ProviderGap[] = [
       'Principal-level spend controls are absent; a compromised or misconfigured SP can consume disproportionate DBU budget beyond cluster-policy caps.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.60',
+    status: 'Open',
   },
   {
     id: 'PGP-013',
@@ -356,20 +452,22 @@ export const providerGaps: ProviderGap[] = [
       'In a multi-workspace deployment, catalogs may be accessible to unintended workspaces; isolation relies on grant controls rather than binding restrictions.',
     wave: 'Wave 2 (P1)',
     providerVersionIntroduced: '≥ 1.53',
+    status: 'Open',
   },
   // ── Provider Currency ────────────────────────────────────────────────────
   {
     id: 'PGP-014',
     category: 'Provider Currency',
-    severity: 'High',
+    severity: 'Medium',
     resource: 'hashicorp/databricks provider version',
-    title: 'Provider still pinned at ~> 1.91; staged upgrade to latest required',
+    title: 'Provider pinned at ~> 1.91; staged upgrade still recommended for remaining gaps',
     description:
-      'All three stacks (Part A, Part B, Part C) pin the Databricks provider at ~> 1.91. The latest published version includes fixes and new resources (Apps, NCC, ESM, Budget Policy, Catalog Binding). Upgrade requires staged compatibility testing: Part C first, then Part A, then Part B.',
+      'All three stacks (Part A, Part B, Part C) pin the Databricks provider at ~> 1.91. 7 of 13 provider gaps have been resolved at the current pin (PGP-001/002/003/004/006/007/011). Remaining gaps (NCC, Budget Policy, Catalog Binding, Model Serving, Model Registry, Vector Search) may benefit from latest provider features. Upgrade requires staged compatibility testing: Part C first, then Part A, then Part B.',
     impact:
-      '12 newer provider resources (PGP-001 through PGP-013) cannot be safely adopted until the provider pin is advanced. Security patches and deprecated-resource warnings also accumulate on old pins.',
+      '6 remaining provider gaps (PGP-005/008/009/010/012/013) remain open. Staged upgrade path recommended for Wave 3 to access latest fixes and resources.',
     wave: 'Wave 3 (P2)',
     providerVersionIntroduced: 'latest',
+    status: 'Partially Resolved',
   },
 ]
 

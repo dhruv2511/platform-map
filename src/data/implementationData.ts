@@ -459,13 +459,16 @@ export const implementationTasks: ImplementationTask[] = [
     id: 'ARCH-014',
     category: 'Infrastructure',
     title: 'Wave 2: Compute Runtime Standardization',
-    description: 'Introduce instance pools, global init scripts, and optional curated platform cluster baselines.',
+    description: 'Instance pools, global init scripts, automatic cluster update, and 5-tier cluster policy framework (default/dev/prod/cost_control/security) now implemented in cluster_policies module within terraform-modules-central.',
     priority: 'High',
-    status: 'Planned',
+    status: 'Completed',
+    completedDate: '2026-03-26',
     filesModified: [
-      'databricks-workspace-configuration-aws/modules/'
+      'terraform-modules-central/cluster_policies/main.tf',
+      'terraform-modules-central/cluster_policies/variables.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf'
     ],
-    impact: 'Improves runtime consistency, startup performance, and cluster governance baseline.',
+    impact: 'Compute runtime standardized with instance pools for cold-start reduction, global init scripts for consistent bootstrap, automatic cluster update for patch currency, and 5-tier budget enforcement ($300-$5000).',
     relatedGap: 'Compute Runtime Standardization'
   },
   {
@@ -525,6 +528,85 @@ export const implementationTasks: ImplementationTask[] = [
     ],
     impact: 'Established a single module operating model with reusable versioned components and clear network topology separation for single_vpc, hub_spoke, and spoke_only deployments.',
     relatedGap: 'Module Centralization & Topology Split'
+  },
+
+  {
+    id: 'ARCH-019',
+    category: 'Security',
+    title: 'Security Baseline Module: ESM + Compliance Security Profile',
+    description: 'Deployed dedicated security module in terraform-modules-central with Enhanced Security Monitoring (ESM) at workspace level for SIEM integration and threat detection, plus Compliance Security Profile for HIPAA and FEDRAMP_MODERATE standards.',
+    priority: 'Critical',
+    status: 'Completed',
+    completedDate: '2026-03-26',
+    filesModified: [
+      'terraform-modules-central/security/main.tf',
+      'terraform-modules-central/security/variables.tf',
+      'terraform-modules-central/security/providers.tf',
+      'databricks-workspace-configuration-aws/workspace_configuration/main.tf'
+    ],
+    impact: 'ESM-level audit events and threat-detection signals now active. Compliance profiles (HIPAA/FEDRAMP) codified in IaC. Resolves provider gaps PGP-001 and PGP-003.',
+    relatedGap: 'Enhanced Security Monitoring & Compliance'
+  },
+  {
+    id: 'ARCH-020',
+    category: 'Data Platform Readiness',
+    title: 'Workspace Apps Baseline Module Deployed',
+    description: 'Deployed workspace_apps module in terraform-modules-central for Databricks Apps serverless app deployment with permissions baseline and platform governance.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-26',
+    filesModified: [
+      'terraform-modules-central/workspace_apps/main.tf',
+      'terraform-modules-central/workspace_apps/variables.tf',
+      'terraform-modules-central/workspace_apps/providers.tf'
+    ],
+    impact: 'Databricks Apps can now be deployed through IaC with platform guardrails, tagging, and access controls. Resolves provider gap PGP-004.',
+    relatedGap: 'Databricks Apps Governance'
+  },
+  {
+    id: 'ARCH-021',
+    category: 'Operations',
+    title: 'Provider Configuration DRY Refactoring Across All Modules',
+    description: 'Consolidated provider blocks from child modules to terraform.tf across all 22 modules in terraform-modules-central. Follows Terraform best practices for child module provider configuration.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-23',
+    filesModified: [
+      'terraform-modules-central/*/providers.tf',
+      'terraform-modules-central/*/terraform.tf'
+    ],
+    impact: 'Reduced provider boilerplate across 22 modules. Consistent provider configuration pattern. Easier maintenance and version management.',
+    relatedGap: 'Provider Configuration Consistency'
+  },
+  {
+    id: 'ARCH-022',
+    category: 'Data Platform Readiness',
+    title: 'Enhanced Workspace Monitoring: Lakeview Dashboards + Quality Monitors',
+    description: 'Extended workspace_monitoring module with Lakeview dashboards (5 embedded datasets), Lakehouse quality monitors (time_series/snapshot/inference_log), failure rate alerts, and dynamic SQL warehouse management.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-26',
+    filesModified: [
+      'terraform-modules-central/workspace_monitoring/main.tf',
+      'terraform-modules-central/workspace_monitoring/variables.tf'
+    ],
+    impact: 'Workspace analytics now use modern Lakeview dashboards. Data quality SLOs tracked via quality monitors. Failure rate alerts for clusters and jobs. Resolves provider gap PGP-011.',
+    relatedGap: 'Monitoring Modernization'
+  },
+  {
+    id: 'ARCH-023',
+    category: 'Infrastructure',
+    title: 'IAM Policy Hardening in Backend Provisioning',
+    description: 'Hardened IAM policies in aws-databricks-backend-provisioning with tightened assume policies, removed unnecessary ADO roles, and cleaned up IAM tag references.',
+    priority: 'High',
+    status: 'Completed',
+    completedDate: '2026-03-11',
+    filesModified: [
+      'aws-databricks-backend-provisioning/terraform/iam_policy.tf',
+      'aws-databricks-backend-provisioning/terraform/iam_roles.tf'
+    ],
+    impact: 'Reduced IAM attack surface in backend infrastructure. Tightened assume policies follow least-privilege principle.',
+    relatedGap: 'IAM Policy Hardening'
   },
 
   // Data Platform Architect Tasks (Q2-Q4 2026)
@@ -863,12 +945,12 @@ export const identifiedGaps: IdentifiedGap[] = [
     id: 'GAP-030',
     category: 'Performance',
     title: 'Runtime and SQL Standardization Waves',
-    currentState: 'Compute runtime baseline and SQL model standardization are not yet implemented consistently',
-    targetState: 'Wave 2 and Wave 3 deliver runtime baseline controls, SQL standardization, and phased provider upgrade',
+    currentState: 'Compute runtime baseline delivered (cluster policies with instance pools, global init scripts, auto cluster update). SQL standardization and provider upgrade still pending Wave 3.',
+    targetState: 'Wave 3 delivers SQL standardization, NCC serverless connectivity, and phased provider upgrade',
     priority: 'Medium',
-    status: 'Open',
+    status: 'Mitigated',
     relatedTasks: ['ARCH-014', 'ARCH-015', 'ARCH-016', 'ARCH-017'],
-    impact: 'Consistency, performance governance, and provider-evolution readiness remain dependent on next-wave delivery'
+    impact: 'Runtime governance now enforced via 5-tier cluster policies. SQL standardization and provider upgrade remain Wave 3 deliverables.'
   },
   {
     id: 'GAP-031',
@@ -880,6 +962,62 @@ export const identifiedGaps: IdentifiedGap[] = [
     status: 'Addressed',
     relatedTasks: ['ARCH-018'],
     impact: 'Improves module reuse, reduces drift, and clarifies network topology ownership across delivery teams'
+  },
+
+  {
+    id: 'GAP-032',
+    category: 'Security',
+    title: 'Enhanced Security Monitoring & Compliance Profile',
+    currentState: 'ESM and Compliance Security Profile were not codified in IaC; set manually outside Terraform state',
+    targetState: 'Dedicated security module with ESM + Compliance Security Profile (HIPAA/FEDRAMP) in Terraform state',
+    priority: 'Critical',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-019'],
+    impact: 'ESM audit events and threat-detection signals now active. Compliance profiles are drift-detectable in Terraform state.'
+  },
+  {
+    id: 'GAP-033',
+    category: 'Operations',
+    title: 'Databricks Apps Governance',
+    currentState: 'No platform module for Databricks Apps; teams provisioned ad-hoc without governance',
+    targetState: 'Workspace Apps baseline module with permissions, governance, and cost allocation',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-020'],
+    impact: 'Apps deployment now follows platform governance with IaC-based guardrails and access controls'
+  },
+  {
+    id: 'GAP-034',
+    category: 'Operations',
+    title: 'Provider Configuration Consistency',
+    currentState: 'Provider blocks duplicated across child modules with inconsistent patterns',
+    targetState: 'Consolidated provider blocks in terraform.tf following DRY principles across all modules',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-021'],
+    impact: 'Reduced boilerplate, consistent provider config, easier version management across 22 modules'
+  },
+  {
+    id: 'GAP-035',
+    category: 'Performance',
+    title: 'Monitoring Modernization',
+    currentState: 'Workspace monitoring used basic SQL dashboards without quality monitors or modern Lakeview dashboards',
+    targetState: 'Lakeview dashboards with 5 embedded datasets, quality monitors, and failure rate alerts',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-022'],
+    impact: 'Modern Lakeview dashboards for real-time analytics. Data quality SLOs tracked. Failure alerts automated.'
+  },
+  {
+    id: 'GAP-036',
+    category: 'Security',
+    title: 'IAM Policy Hardening',
+    currentState: 'Backend IAM policies included unnecessary roles and overly permissive assume policies',
+    targetState: 'Tightened IAM policies with least-privilege assume policies and removed unused roles',
+    priority: 'High',
+    status: 'Addressed',
+    relatedTasks: ['ARCH-023'],
+    impact: 'Reduced IAM attack surface in backend infrastructure with tightened least-privilege policies'
   },
 
   // Data Platform Governance Gaps (Q2-Q4 2026)
