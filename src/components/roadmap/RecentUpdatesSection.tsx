@@ -61,8 +61,20 @@ export function RecentUpdatesSection() {
     {
       title: '📦 Centralized Module Registry + Hub/Spoke Split',
       status: '✅ Complete Mar 18',
-      items: ['terraform-modules-central now operational as shared registry', 'Dedicated network_hub and network_spoke modules live', 'Re-review baseline updated: AWS 90%, Databricks 89%, L3.9 maturity'],
+      items: ['terraform-modules-central now operational as shared registry (22 modules)', 'Dedicated network_hub and network_spoke modules live', 'Provider configuration DRY refactoring completed across all modules', 'Re-review baseline: AWS 93%, Databricks 92%, L4.2 maturity'],
       arch: 'ARCH-018',
+    },
+    {
+      title: '🔒 Enhanced Security Monitoring (ESM) + Compliance Profile',
+      status: '✅ Deployed Mar 18',
+      items: ['ESM enabled at workspace level with SIEM integration', 'Compliance Security Profile (HIPAA + FEDRAMP_MODERATE) codified in IaC', 'Security pillar enhanced from 94% to 96%', 'Dedicated security module with workspace-level settings'],
+      arch: 'SEC-012',
+    },
+    {
+      title: '📊 Workspace Monitoring & Observability',
+      status: '✅ Complete Mar 12',
+      items: ['workspace_monitoring module centralized in registry', 'Lakeview dashboards with 5 embedded SQL datasets', 'System tables integration for performance analytics', 'Lakehouse quality monitors with failure rate tracking'],
+      arch: 'OPS-008',
     },
   ]
 
@@ -116,20 +128,20 @@ export function RecentUpdatesSection() {
         <h4>📈 Program Impact Summary</h4>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>6/8</div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Architect Tasks Complete (75%)</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>8/8</div>
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>Architect Tasks Complete (100%)</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>11/11</div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Security Milestones (100%)</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#2ecc71' }}>22</div>
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>Centralized Terraform Modules</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3498db' }}>90 / 89</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#3498db' }}>93 / 92</div>
             <div style={{ fontSize: '0.9rem', color: '#666' }}>Current WAF Baseline (AWS / Databricks)</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#9b59b6' }}>L3.9</div>
-            <div style={{ fontSize: '0.9rem', color: '#666' }}>Platform Maturity with Centralized Module Operating Model</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#9b59b6' }}>L4.2</div>
+            <div style={{ fontSize: '0.9rem', color: '#666' }}>Production-Ready with Advanced Security & Governance</div>
           </div>
         </div>
       </div>
