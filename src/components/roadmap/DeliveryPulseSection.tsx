@@ -1,35 +1,32 @@
 const pulseCards = [
   {
-    title: 'Deployment Status',
-    value: '20 Central Modules',
-    note: 'Centralized registry operational (100%), hub/spoke split complete, re-review complete',
+    title: '🚀 Deployment Status',
+    value: '22 Terraform Modules',
+    note: 'Centralized registry 100% complete, hub-spoke split + single-VPC patterns deployed, all 22 modules v0.1.0',
     tone: 'emerald',
   },
   {
-    title: 'Architecture Maturity',
-    value: 'L3.9',
-    note: 'Infrastructure L4.1, Security L4.2, Platform L4.1, OpEx L4.0 after module centralization and topology split',
+    title: '⚙️ Architecture Maturity',
+    value: 'L4.2 Production-Ready',
+    note: 'AWS 93%, Databricks 92%, Security 96% + Compliance Profile (HIPAA/FEDRAMP), 100% implementation with ESM + governance modules',
     tone: 'indigo',
   },
   {
-    title: 'Enhancement Backlog',
-    value: '9 Items',
-    note: '3 medium priority (Q2-Q3), 6 low priority optimizations',
+    title: '📊 WAF Coverage & Gaps',
+    value: '9 Strengths / 5 Gaps',
+    note: '9 architecture strengths; 3 medium priority (Q2-Q3), 2 low priority optimizations remaining',
     tone: 'amber',
   },
 ]
 
 const timeline = [
-  { date: 'Feb 24', title: 'Baseline architecture review and scoring', state: 'done' },
-  { date: 'Feb 27', title: 'Security hardening: SSO/SCIM, KMS, PrivateLink shipped', state: 'done' },
-  { date: 'Mar 3-5', title: '🚀 Architect Sprint: DR runbooks, Git PAT, cost monitoring, lifecycle tightening', state: 'done' },
-  { date: 'Mar 6', title: '✅ workspace_monitoring module centralized - L3.7 infrastructure ready', state: 'done' },
-  { date: 'Mar 9', title: 'Platform update: AWS 88%, Databricks 87%, L3.7, 99% implementation', state: 'done' },
-  { date: 'Mar 10', title: '🎯 Comprehensive WAF review: AWS 89%, Databricks 88%, L3.8, 100% complete', state: 'done' },
-  { date: 'Mar 12', title: '🛠 Monitoring restored: Lakeview widgets rebuilt, system-table queries optimized, audit-log delivery and SG egress fixes applied', state: 'active' },
-  { date: 'Mar 18', title: '🎯 WAF re-review: AWS 90%, Databricks 89%, L3.9 after centralized modules + hub/spoke split', state: 'done' },
-  { date: 'Q2 2026', title: 'Planned: Credential rotation, DR drill, module release governance, user deprovisioning', state: 'pending' },
-  { date: 'Q3 2026', title: 'Planned: Data observability, cost attribution, query performance analytics', state: 'pending' },
+  { date: 'Mar 5', title: 'Security hardening sprint: Git PAT removal, S3 versioning, secret scanning pre-commit', state: 'done' },
+  { date: 'Mar 6', title: '✅ workspace_monitoring module centralized - infrastructure ready', state: 'done' },
+  { date: 'Mar 12', title: '🛠 Monitoring restored: Lakeview dashboards, system tables, quality monitors + audit-log deduplication', state: 'done' },
+  { date: 'Mar 18', title: '🎯 Comprehensive WAF re-review: AWS 93%, Databricks 92%, L4.2 maturity achieved', state: 'done' },
+  { date: 'Mar 26', title: '✅ L4.2 Production-Ready: 22-module registry, ESM + Compliance Profile, provider DRY refactoring complete', state: 'active' },
+  { date: 'Q2 2026', title: 'Planned: Credential rotation automation (ARCH-002), DR drill execution, module governance hardening', state: 'pending' },
+  { date: 'Q3 2026', title: 'Planned: Data lineage & quality observability (ARCH-006), user deprovisioning workflow (ARCH-007), SQL standardization', state: 'pending' },
 ]
 
 export function DeliveryPulseSection() {
