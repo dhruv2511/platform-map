@@ -24,7 +24,7 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.harness_k8s
+              connectorRef: Cluster_Connector
               namespace: harness-delegate
               automountServiceAccountToken: true
               nodeSelector: {}
