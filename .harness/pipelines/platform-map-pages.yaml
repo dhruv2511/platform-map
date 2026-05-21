@@ -1,8 +1,8 @@
 pipeline:
   name: platform-map-pages
   identifier: platform_map_pages
-  orgIdentifier: <+input>
-  projectIdentifier: <+input>
+  orgIdentifier: default
+  projectIdentifier: demo_project
   tags: {}
   variables:
     - name: github_owner
@@ -28,7 +28,7 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: account.github
+        connectorRef: project.github
         repoName: harness-demo
         build: <+input>
   stages:
@@ -42,7 +42,7 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.harness_k8s
+              connectorRef: project.harness_k8s
               namespace: harness-delegate
               automountServiceAccountToken: true
               nodeSelector: {}
@@ -54,8 +54,8 @@ pipeline:
                   name: Build and Publish Pages
                   identifier: build_and_publish_pages
                   spec:
-                    connectorRef: account.harnessImage
-                    image: node:22-alpine
+                    connectorRef: project.artifact_registry_docker
+                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
                     shell: Sh
                     command: |
                       apk add --no-cache git

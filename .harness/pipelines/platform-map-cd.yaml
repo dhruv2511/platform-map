@@ -18,7 +18,7 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: account.github
+        connectorRef: project.github
         repoName: harness-demo
         build: <+input>
   stages:
@@ -32,7 +32,7 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.harness_k8s
+              connectorRef: project.harness_k8s
               namespace: harness-delegate
               automountServiceAccountToken: true
               nodeSelector: {}
@@ -44,7 +44,7 @@ pipeline:
                   name: Deploy To Kubernetes
                   identifier: deploy_to_kubernetes
                   spec:
-                    connectorRef: account.harnessImage
+                    connectorRef: project.harnessImage
                     image: bitnami/kubectl:1.30
                     shell: Sh
                     command: |

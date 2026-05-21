@@ -12,7 +12,7 @@ pipeline:
         build:
           type: branch
           spec:
-            branch: <+trigger.branch>
+            branch: main
   stages:
     - stage:
         name: CI
@@ -36,8 +36,8 @@ pipeline:
                   name: Read Version
                   identifier: read_version
                   spec:
-                    connectorRef: project.harnessImage
-                    image: node:22-alpine
+                    connectorRef: project.artifact_registry_docker
+                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
                     shell: Sh
                     command: |
                       cd platform-map
@@ -61,8 +61,8 @@ pipeline:
                   name: Install Build Lint
                   identifier: install_build_lint
                   spec:
-                    connectorRef: project.harnessImage
-                    image: node:22-alpine
+                    connectorRef: project.artifact_registry_docker
+                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
                     shell: Sh
                     command: |
                       cd platform-map
