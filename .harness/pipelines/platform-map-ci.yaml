@@ -1,0 +1,56 @@
+pipeline:
+  name: platform-map-ci
+  identifier: platform_map_ci
+  orgIdentifier: <+input>
+  projectIdentifier: <+input>
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.github
+        repoName: harness-demo
+        build: <+input>
+  stages:
+    - stage:
+        name: CI
+        identifier: CI
+        description: Build, lint, and publish platform-map image
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: account.harness_k8s
+              namespace: harness-delegate
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install Build Lint
+                  identifier: install_build_lint
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: node:22-alpine
+                    shell: Sh
+                    command: |
+                      cd platform-map
+                      npm ci
+                      npm run lint
+                      npm run build
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Image
+                  identifier: build_and_push
+                  spec:
+                    connectorRef: account.artifact_registry_docker
+                    repo: us-docker.pkg.dev/your-gcp-project/your-artifact-repo/platform-map
+                    tags:
+                      - <+codebase.commitSha>
+                      - latest
+                    dockerfile: platform-map/Dockerfile
+                    context: platform-map
+  allowStageExecutions: true

@@ -1,0 +1,77 @@
+pipeline:
+  name: platform-map-pages
+  identifier: platform_map_pages
+  orgIdentifier: <+input>
+  projectIdentifier: <+input>
+  tags: {}
+  variables:
+    - name: github_owner
+      type: String
+      description: GitHub organization or user that owns the repository
+      required: true
+      value: <+input>
+    - name: github_repo
+      type: String
+      description: GitHub repository name
+      required: true
+      value: harness-demo
+    - name: pages_branch
+      type: String
+      description: GitHub Pages publish branch
+      required: true
+      value: gh-pages
+    - name: pages_base_path
+      type: String
+      description: Next.js static export base path for GitHub Pages
+      required: true
+      value: /platform-map
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.github
+        repoName: harness-demo
+        build: <+input>
+  stages:
+    - stage:
+        name: DeployPages
+        identifier: deploy_pages
+        description: Build static export and publish to GitHub Pages branch
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: account.harness_k8s
+              namespace: harness-delegate
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Build and Publish Pages
+                  identifier: build_and_publish_pages
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: node:22-alpine
+                    shell: Sh
+                    command: |
+                      apk add --no-cache git
+                      cd platform-map
+                      npm ci
+                      NEXT_PUBLIC_DEPLOY_TARGET=static NEXT_PUBLIC_BASE_PATH=<+pipeline.variables.pages_base_path> npm run build
+                      cd out
+                      touch .nojekyll
+
+                      git init
+                      git config user.name "harness-bot"
+                      git config user.email "harness-bot@users.noreply.github.com"
+                      git checkout -b <+pipeline.variables.pages_branch>
+                      git add .
+                      git commit -m "Deploy platform-map pages <+codebase.commitSha>"
+
+                      git remote add origin https://x-access-token:<+secrets.getValue("github_pat")>@github.com/<+pipeline.variables.github_owner>/<+pipeline.variables.github_repo>.git
+                      git push --force origin <+pipeline.variables.pages_branch>
+  allowStageExecutions: true

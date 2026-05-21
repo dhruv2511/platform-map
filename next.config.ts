@@ -11,10 +11,14 @@ import type { NextConfig } from 'next'
 const isStatic = process.env.NEXT_PUBLIC_DEPLOY_TARGET === 'static'
 
 const nextConfig: NextConfig = {
-  ...(isStatic && {
-    output: 'export',
-    trailingSlash: true,   // every route → /route/index.html  (no 404.html hack needed)
-  }),
+  ...(isStatic
+    ? {
+        output: 'export',
+        trailingSlash: true,   // every route -> /route/index.html  (no 404.html hack needed)
+      }
+    : {
+        output: 'standalone',
+      }),
   basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '',
   images: { unoptimized: true },
 }

@@ -1,0 +1,55 @@
+pipeline:
+  name: platform-map-cd
+  identifier: platform_map_cd
+  orgIdentifier: <+input>
+  projectIdentifier: <+input>
+  tags: {}
+  variables:
+    - name: image_repo
+      type: String
+      description: Full Artifact Registry repository path
+      required: true
+      value: us-docker.pkg.dev/your-gcp-project/your-artifact-repo/platform-map
+    - name: image_tag
+      type: String
+      description: Image tag to deploy, usually commit SHA from CI
+      required: true
+      value: <+input>
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.github
+        repoName: harness-demo
+        build: <+input>
+  stages:
+    - stage:
+        name: CD
+        identifier: CD
+        description: Deploy platform-map image to Kubernetes using kustomize
+        type: CI
+        spec:
+          cloneCodebase: true
+          infrastructure:
+            type: KubernetesDirect
+            spec:
+              connectorRef: account.harness_k8s
+              namespace: harness-delegate
+              automountServiceAccountToken: true
+              nodeSelector: {}
+              os: Linux
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Deploy To Kubernetes
+                  identifier: deploy_to_kubernetes
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: bitnami/kubectl:1.30
+                    shell: Sh
+                    command: |
+                      cd platform-map
+                      kubectl kustomize k8s > /tmp/platform-map-k8s.yaml
+                      sed "s#us-docker.pkg.dev/your-gcp-project/your-artifact-repo/platform-map:latest#<+pipeline.variables.image_repo>:<+pipeline.variables.image_tag>#g" /tmp/platform-map-k8s.yaml | kubectl apply -f -
+                      kubectl -n platform-map rollout status deploy/platform-map --timeout=180s
+  allowStageExecutions: true
