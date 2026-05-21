@@ -8,8 +8,11 @@ pipeline:
     ci:
       codebase:
         connectorRef: account.github
-        repoName: harness-demo
-        build: <+input>
+        repoName: platform-map
+        build:
+          type: branch
+          spec:
+            branch: <+trigger.branch>
   stages:
     - stage:
         name: CI
@@ -30,6 +33,31 @@ pipeline:
             steps:
               - step:
                   type: Run
+                  name: Read Version
+                  identifier: read_version
+                  spec:
+                    connectorRef: account.harnessImage
+                    image: node:22-alpine
+                    shell: Sh
+                    command: |
+                      cd platform-map
+                      if [ ! -f VERSION ]; then
+                        echo "VERSION file is missing"
+                        exit 1
+                      fi
+                      APP_VERSION=$(tr -d '[:space:]' < VERSION)
+                      if [ -z "$APP_VERSION" ]; then
+                        echo "VERSION file is empty"
+                        exit 1
+                      fi
+                      echo "Using app version: $APP_VERSION"
+                      export APP_VERSION
+                    outputVariables:
+                      - name: APP_VERSION
+                        type: String
+                        value: APP_VERSION
+              - step:
+                  type: Run
                   name: Install Build Lint
                   identifier: install_build_lint
                   spec:
@@ -47,8 +75,9 @@ pipeline:
                   identifier: build_and_push
                   spec:
                     connectorRef: account.artifact_registry_docker
-                    repo: us-docker.pkg.dev/your-gcp-project/your-artifact-repo/platform-map
+                    repo: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map
                     tags:
+                      - <+execution.steps.read_version.output.outputVariables.APP_VERSION>
                       - <+codebase.commitSha>
                       - latest
                     dockerfile: platform-map/Dockerfile
