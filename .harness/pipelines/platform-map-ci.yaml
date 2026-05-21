@@ -51,7 +51,7 @@ pipeline:
                         exit 1
                       fi
                       echo "Using app version: $APP_VERSION"
-                      export APP_VERSION
+                    branch: main
                     outputVariables:
                       - name: APP_VERSION
                         type: String
