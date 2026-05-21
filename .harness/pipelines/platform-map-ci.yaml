@@ -7,7 +7,7 @@ pipeline:
   properties:
     ci:
       codebase:
-        connectorRef: account.github
+        connectorRef: project.github
         repoName: platform-map
         build:
           type: branch
@@ -24,8 +24,8 @@ pipeline:
           infrastructure:
             type: KubernetesDirect
             spec:
-              connectorRef: account.harness_k8s
-              namespace: harness-delegate
+              connectorRef: project.harness_k8s
+              namespace: harness-k8s-delegate
               automountServiceAccountToken: true
               nodeSelector: {}
               os: Linux
@@ -36,7 +36,7 @@ pipeline:
                   name: Read Version
                   identifier: read_version
                   spec:
-                    connectorRef: account.harnessImage
+                    connectorRef: project.harnessImage
                     image: node:22-alpine
                     shell: Sh
                     command: |
@@ -61,7 +61,7 @@ pipeline:
                   name: Install Build Lint
                   identifier: install_build_lint
                   spec:
-                    connectorRef: account.harnessImage
+                    connectorRef: project.harnessImage
                     image: node:22-alpine
                     shell: Sh
                     command: |
@@ -74,7 +74,7 @@ pipeline:
                   name: Build and Push Image
                   identifier: build_and_push
                   spec:
-                    connectorRef: account.artifact_registry_docker
+                    connectorRef: project.artifact_registry_docker
                     repo: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map
                     tags:
                       - <+execution.steps.read_version.output.outputVariables.APP_VERSION>
