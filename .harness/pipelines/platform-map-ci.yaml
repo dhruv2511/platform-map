@@ -36,8 +36,8 @@ pipeline:
                   name: Read Version
                   identifier: read_version
                   spec:
-                    connectorRef: account.artifact_registry_docker
-                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
+                    connectorRef: project.dockerhub
+                    image: docker.io/library/node:22-alpine
                     shell: Sh
                     command: |
                       cd platform-map
@@ -61,8 +61,8 @@ pipeline:
                   name: Install Build Lint
                   identifier: install_build_lint
                   spec:
-                    connectorRef: account.artifact_registry_docker
-                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
+                    connectorRef: project.dockerhub
+                    image: docker.io/library/node:22-alpine
                     shell: Sh
                     command: |
                       cd platform-map

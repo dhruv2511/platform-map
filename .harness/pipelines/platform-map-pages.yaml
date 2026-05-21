@@ -54,8 +54,8 @@ pipeline:
                   name: Build and Publish Pages
                   identifier: build_and_publish_pages
                   spec:
-                    connectorRef: project.artifact_registry_docker
-                    image: europe-west2-docker.pkg.dev/shitsandgiggles/platform-map/node:22-alpine
+                    connectorRef: project.dockerhub
+                    image: docker.io/library/node:22-alpine
                     shell: Sh
                     command: |
                       apk add --no-cache git
