@@ -1,8 +1,8 @@
 pipeline:
   name: platform-map-cd
   identifier: platform_map_cd
-  orgIdentifier: <+input>
-  projectIdentifier: <+input>
+  orgIdentifier: default
+  projectIdentifier: demo_project
   tags: {}
   variables:
     - name: image_repo
