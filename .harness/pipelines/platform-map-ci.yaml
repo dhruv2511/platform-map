@@ -36,7 +36,7 @@ pipeline:
                   name: Read Version
                   identifier: read_version
                   spec:
-                    connectorRef: project.harnessImage
+                    connectorRef: account.harnessImage
                     image: docker.io/library/node:22-alpine
                     shell: Sh
                     command: |
@@ -61,7 +61,7 @@ pipeline:
                   name: Install Build Lint
                   identifier: install_build_lint
                   spec:
-                    connectorRef: project.harnessImage
+                    connectorRef: account.harnessImage
                     image: docker.io/library/node:22-alpine
                     shell: Sh
                     command: |
